@@ -15,16 +15,41 @@ const io = new Server(server, {
     },
 });
 
+var count = 0;
+var namelist =[];
+
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`);
+    count++;
+    console.log(`${count}) USER CONNECTED: ${socket.id}`);
+    io.emit("online_no", count);
 
     socket.on("join_room", (data) => {
-        socket.join(data);
+        socket.leave(data.oldRoom)
+        socket.join(data.newRoom);
+        console.log(`-- ${socket.id} is now disconnected from room: ${data.oldRoom}`)
+        console.log(`-- ${socket.id} is now connected to room: ${data.newRoom}`)
+        socket.emit("ack_room", data)
+    });
+
+    socket.on("add_name", (data) => {
+        socket.leave(data.oldRoom)
+        socket.join(data.newRoom);
+        console.log(`-- ${socket.id} is now disconnected from room: ${data.oldRoom}`)
+        console.log(`-- ${socket.id} is now connected to room: ${data.newRoom}`)
+        namelist.push(data.name);
+        console.log(namelist);
+        socket.emit("ack_room", data)
     });
 
     socket.on("send_message", (data) =>{
         //socket.broadcast.emit("recieve_message", (data))
-        socket.to(data.room).emit("recieve_message", (data));
+        socket.to(data.oldRoom).emit("recieve_message", (data));
+    })
+
+    socket.on("disconnect", () => {
+        --count;
+        console.log(`${count}] USER DISCONNECTED: ${socket.id}`);
+        io.emit("online_no", count)
     })
 });
 
