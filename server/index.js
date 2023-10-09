@@ -1,58 +1,42 @@
-const express = require("express");
-const app = express();
-const http = require("http");
-const { Server } = require("socket.io");
-const cors = require("cors");
+const { io,server } = require('./functions/socket-server.js')
+const { instrument } = require("@socket.io/admin-ui");
 
-app.use(cors());
+const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
+const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js');
+const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
+const { wordlist } = require('./functions/wordlist.js')
 
-const server = http.createServer(app);
-
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
-    },
-});
-
+const word = wordlist[15].length;
 var count = 0;
-var namelist =[];
+
+instrument(io, {
+    auth: false,
+  });
 
 io.on("connection", (socket) => {
-    count++;
-    console.log(`${count}) USER CONNECTED: ${socket.id}`);
-    io.emit("online_no", count);
+    console.log(word);
 
-    socket.on("join_room", (data) => {
-        socket.leave(data.oldRoom)
-        socket.join(data.newRoom);
-        console.log(`-- ${socket.id} is now disconnected from room: ${data.oldRoom}`)
-        console.log(`-- ${socket.id} is now connected to room: ${data.newRoom}`)
-        socket.emit("ack_room", data)
+    socket.once("connected", () => {
+        console.log(`${++count}) USER CONNECTED: ${socket.id}`);
+        io.emit("online_no", count);  
     });
+    
+    //socket.once("connected", playerConnect)
+    socket.on("join_room", joinRoom)
+    socket.on("send_message", sendMessage)
+    //socket.on("disconnect", playerDisconnect)
 
-    socket.on("add_name", (data) => {
-        socket.leave(data.oldRoom)
-        socket.join(data.newRoom);
-        console.log(`-- ${socket.id} is now disconnected from room: ${data.oldRoom}`)
-        console.log(`-- ${socket.id} is now connected to room: ${data.newRoom}`)
-        namelist.push(data.name);
-        console.log(namelist);
-        socket.emit("ack_room", data)
-    });
+    socket.on("request_len", RandomLength);
+    socket.on("request_word", RandomWord);
 
-    socket.on("send_message", (data) =>{
-        //socket.broadcast.emit("recieve_message", (data))
-        socket.to(data.oldRoom).emit("recieve_message", (data));
-    })
 
     socket.on("disconnect", () => {
-        --count;
-        console.log(`${count}] USER DISCONNECTED: ${socket.id}`);
-        io.emit("online_no", count)
-    })
+        console.log(`${--count}] USER DISCONNECTED: ${socket.id}`);
+        io.emit("online_no", count);
+    });
 });
 
 server.listen(3001, () => {
-    console.log("server is running");
+    console.log("SERVER IS RUNNING")    //when run node index.js server, return text
 });
+
