@@ -1,42 +1,21 @@
-/**module.exports = (io,) => {*/
+const { io } = require('./socket-server.js')
 
-//unused
-
-var count = 0;
-
-const playerConnect = function () {
+const playerConnect = function () {   // add 1 to counter
   const socket = this;
+  global.count = global.count + 1;
   console.log(`USER CONNECTED: ${socket.id}`);
-  io.emit("online_no", count);
+  io.emit("online_no", global.count);
  }
 
-const playerDisconnect = function () {
+const playerDisconnect = function () {    // subtract 1 to counter
   const socket = this;
+  global.count = global.count - 1;
   console.log(`USER DISCONNECTED: ${socket.id}`);
-  io.emit("online_no", count);
+  io.emit("online_no", global.count);
 }
-  /*return(
-  playerConnect,
-  playerDisconnect
-)*/
-
-  //}
-
-
-/*io.once("connection", (socket) => {
-  console.log(`${++count}) USER CONNECTED: ${socket.id}`);
-  io.emit("online_no", count);
-
-  socket.on("disconnect", playerDisconnect);
-});
-*/
+  
 module.exports = {
   playerConnect,
   playerDisconnect
 }
-///*}*/
 
-
-    
-
-  

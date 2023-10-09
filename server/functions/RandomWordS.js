@@ -3,10 +3,8 @@ const { io } = require('./socket-server.js')
 
 var len;
 var word;
-var rnd;
-var pos;
 
-const EasyMode = function (rnd) {
+const EasyMode = function (rnd) {   //assign prob. for easy mode
   if (rnd < 0.1) {return(3)}
   else if (rnd >= 0.1 && rnd < 0.3) {return(4)}
   else if (rnd >= 0.3 && rnd < 0.7) {return(5)}
@@ -14,7 +12,7 @@ const EasyMode = function (rnd) {
   else {return(7)};
 }
 
-const MediumMode = function (rnd) {
+const MediumMode = function (rnd) {   //assign prob. for medium mode
   if (rnd < 0.1) {return(6)}
   else if (rnd >= 0.1 && rnd < 0.3) {return(7)}
   else if (rnd >= 0.3 && rnd < 0.7) {return(8)}
@@ -22,7 +20,7 @@ const MediumMode = function (rnd) {
   else {return(10)};
 }
 
-const HardMode = function (rnd) {
+const HardMode = function (rnd) {   //assign prob. for hard mode
   if (rnd < 0.1) {return(9)}
   else if (rnd >= 0.1 && rnd < 0.3) {return(10)}
   else if (rnd >= 0.3 && rnd < 0.7) {return(11)}
@@ -30,13 +28,7 @@ const HardMode = function (rnd) {
   else {return(13)};
 }
 
-const Search = function (len) {
-  var size = Object.values(wordlist)[len-2].length
-  var pos = Math.floor(Math.random()*size);
-  return( wordlist[len][pos]);
-}
-
-const RandomLength = function (mode) {
+const RandomLength = function (mode) {    //get random length of word
   var rnd = Math.random();
   if (mode == 2) {
     len = MediumMode(rnd);
@@ -49,7 +41,7 @@ const RandomLength = function (mode) {
   io.emit("send_len", len);
 };
 
-const RandomWord = function (data) {
+const RandomWord = function (len) {     //assign random word to each player
   const socket = this;
   var size = Object.values(wordlist)[len-2].length;
   var pos = Math.floor(Math.random()*size);
