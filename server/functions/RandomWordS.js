@@ -1,5 +1,5 @@
-const { wordlist } = require('./wordlist.js');
-const { io } = require('./socket-server.js')
+const { wordlist } = require('../utils/wordlist.js');
+const { io } = require('../utils/socket-server.js')
 
 var len;
 var word;

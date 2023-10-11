@@ -1,8 +1,8 @@
-const { io, server } = require('./functions/socket-server.js')
+const { io, server } = require('./utils/socket-server.js')
 const { instrument } = require("@socket.io/admin-ui");
 
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
-const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js');
+const { playerConnect } = require('./functions/PlayerCountS.js');
 const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
 
 global.count = 0;   //for PlayerCounter
@@ -11,11 +11,9 @@ instrument(io, {    //admin check
     auth: false,
   });
 
-io.on("connection", (socket) => {
-    //PlayerCount
-    socket.once("connected", playerConnect)
-    socket.on("disconnect", playerDisconnect)
+io.on("connection", playerConnect)      //playerCounter
 
+io.on("connection", (socket) => {
     //SendMessage
     socket.on("join_room", joinRoom)
     socket.on("send_message", sendMessage)
