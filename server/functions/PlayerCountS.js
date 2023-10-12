@@ -12,6 +12,9 @@ const playerDisconnect = function () {    // subtract 1 to counter
   global.count = global.count - 1;
   console.log(`${count}] USER DISCONNECTED: ${socket.id}`);
   io.emit("online_no", global.count);
+  //let index = global.namelist.findIndex(user => user.socketID == socket.id)
+  //delete global.namelist[index]
+  //console.log(namelist)
 }
   
 module.exports = {

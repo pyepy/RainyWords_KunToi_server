@@ -5,8 +5,9 @@ const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect } = require('./functions/PlayerCountS.js');
 const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
-
+const { createName } = require('./functions/AddUsernameS.js')
 global.count = 0;   //for PlayerCounter
+global.namelist = [];
 
 instrument(io, {    //admin check
     auth: false,
@@ -15,9 +16,12 @@ instrument(io, {    //admin check
 io.on("connection", playerConnect)      //playerCounter
 
 io.on("connection", (socket) => {
+    //AddNametoDB
+    socket.on("assign_name",createName);
+
     //SendMessage
-    socket.on("join_room", joinRoom)
-    socket.on("send_message", sendMessage)
+    socket.on("join_room", joinRoom);
+    socket.on("send_message", sendMessage);
     
     //RandomWord
     socket.on("request_len", RandomLength);
