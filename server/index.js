@@ -4,6 +4,7 @@ const { instrument } = require("@socket.io/admin-ui");
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect } = require('./functions/PlayerCountS.js');
 const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
+const { trackTime } = require('./functions/GameTimerS.js')
 
 global.count = 0;   //for PlayerCounter
 
@@ -21,6 +22,9 @@ io.on("connection", (socket) => {
     //RandomWord
     socket.on("request_len", RandomLength);
     socket.on("request_word", RandomWord);
+
+    //Start/StopTimer
+    socket.on("mess_with_time", trackTime)
 });
 
 server.listen(3001, () => {
