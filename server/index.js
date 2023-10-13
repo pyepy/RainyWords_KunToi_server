@@ -6,6 +6,7 @@ const { playerConnect } = require('./functions/PlayerCountS.js');
 const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
+
 global.count = 0;   //for PlayerCounter
 global.namelist = [];
 
