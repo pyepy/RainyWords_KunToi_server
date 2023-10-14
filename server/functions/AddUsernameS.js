@@ -9,6 +9,11 @@ const createName = function (data) {
     name = data;
   }
   let info = {'socketID':socket.id, 'name':name, 'score':0};
+  let index = (global.namelist).findIndex(user => user.socketID == socket.id)   //find index of disconnected id
+  //console.log(index)
+  if (index != -1) {
+    global.namelist.splice(index,1)
+  };
   (global.namelist).push(info);
   console.log(namelist);
   socket.emit("ack_name",{name,namelist})
