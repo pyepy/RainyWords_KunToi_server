@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
     socket.on("mess_with_time", trackTime)
 });
 
-const lobby = io('/play');
+const lobby = io.of('/play');
 
 lobby.on("connection", (socket) => {
     socket.on("select_lobby", SelectLobby)
