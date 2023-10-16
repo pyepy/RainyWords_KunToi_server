@@ -6,6 +6,7 @@ const { playerConnect } = require('./functions/PlayerCountS.js');
 const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
+const { SelectLobby } = require('./functions/SelectLobbyS.js')
 
 global.count = 0;   //for PlayerCounter
 global.namelist = [];
@@ -31,6 +32,17 @@ io.on("connection", (socket) => {
     //Start/StopTimer
     socket.on("mess_with_time", trackTime)
 });
+
+const lobby = io('/play');
+
+lobby.on("connection", (socket) => {
+    socket.on("select_lobby", SelectLobby)
+
+
+
+});
+
+
 
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING")    //when run node index.js server, return text
