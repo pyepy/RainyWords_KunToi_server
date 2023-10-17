@@ -3,10 +3,11 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect } = require('./functions/PlayerCountS.js');
-const { RandomLength, RandomWord } = require('./functions/RandomWordS.js')
+const { randomLength, randomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
-const { SelectLobby } = require('./functions/SelectLobbyS.js')
+const { selectLobby } = require('./functions/SelectLobbyS.js')
+const { updateScore } = require('./functions/ScoreTrackerS.js')
 
 global.count = 0;   //for PlayerCounter
 global.namelist = [];
@@ -37,9 +38,15 @@ var lobby = io.of('/play');
 
 lobby.on("connection", (socket) => {
     //SelectRoom
-    socket.on("select_lobby", SelectLobby)
+    socket.on("select_lobby", selectLobby)
 });
 
+var game = io.of('/game');
+
+game.on("connection", (socket) => {
+    //updateScore
+    socket.on("update_score", updateScore)
+})
 
 
 server.listen(3001, () => {

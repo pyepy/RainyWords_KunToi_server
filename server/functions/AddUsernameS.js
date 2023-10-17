@@ -1,4 +1,5 @@
 var name = "";
+var info = {'socketID':'', 'name':'', 'score':0};
 
 const createName = function (data) {
   const socket = this;
@@ -14,7 +15,7 @@ const createName = function (data) {
     name = "KunToi#"+x;
     i = (global.namelist).findIndex(user => user.name == name)
   }
-  let info = {'socketID':socket.id, 'name':name, 'score':0};
+  info = {'socketID':socket.id, 'name':name, 'score':0};
   let index = (global.namelist).findIndex(user => user.socketID == socket.id)   //find index of disconnected id
   //console.log(index)
   if (index != -1) {
