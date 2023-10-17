@@ -11,7 +11,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {                                     //For anything related to socket.io in the backend
   cors: {                                                         //How to fix connection problem, by setting up
-      origin: ["http://localhost:3000","https://admin.socket.io"],//Url for frontend
+      origin: [     //Url for frontend
+        "http://localhost:3000",
+        "https://admin.socket.io",
+      ],
       methods: ["GET","POST"],                                    //HTTP MEthod allow
       credentials: true                   
   },

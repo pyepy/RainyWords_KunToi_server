@@ -33,13 +33,11 @@ io.on("connection", (socket) => {
     socket.on("mess_with_time", trackTime)
 });
 
-const lobby = io.of('/play');
+var lobby = io.of('/play');
 
 lobby.on("connection", (socket) => {
+    //SelectRoom
     socket.on("select_lobby", SelectLobby)
-
-
-
 });
 
 
