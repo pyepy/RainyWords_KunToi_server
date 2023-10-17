@@ -2,25 +2,42 @@
 //leave lobby
 //player tracker
 const { io } = require('../utils/socket-server.js')
+const { info } = require('../functions/AddUsernameS.js')
 
 const lobby = io.of('/play');
 var roomsize = 0;
 
-const selectLobby = function (data) {
+const createLobby = function (data) {
   const socket = this;
-  var roomsize = io.of('/play').sockets.size;
-  socket.leave(data.oldRoom);     //leave old room
-  console.log(`-- ${socket.id} is now disconnected from room: ${data.oldRoom}`);
-  console.log(`-- ${socket.id} is now connected to room: ${data.room}`);
-  socket.join(data.room);
-  socket.emit("ack_lobby", {"room":data.room,roomsize});  //emit event ack_room
+  let room = data.mode + (Math.floor(Math.random()*900)+100)
+  socket.join(room)
+  socket.emit("rcv_lobby",{room})
+}
+
+const joinLobby = function (data) {
+  const socket = this;
+  socket.join(data.room)
+  socket.emit("rcv_lobby",data.room)
+  socket.to(data.room).emit("rcv_msg",`-- ${info.name} has joined room: ${data.room}`)
+}
+
+const leaveLobby = function (data) {
+  const socket = this;
+  socket.leave(data.oldRoom);
+  socket.emit("rcv_lobby",{room:""})
+  socket.to(data.room).emit("rcv_msg",`-- ${info.name} has left room: ${data.room}`)
+}
+
+const sendMessage = function (data) {
+  const socket = this;
+  socket.to(data.room).emit("rcv_msg", data.message);
 };
 
-const roomCount = function (data) {
+/*const roomCount = function (data) {
   const socket = this;
   console.log(roomsize);
   console.log(`Online Players in room ${data.room}: ${roomsize}`);
   io.of('/play').to(data.room).emit("room_count", {roomsize});
-}
+}*/
 
-module.exports = { selectLobby, roomCount }
+module.exports = { createLobby, joinLobby, leaveLobby }

@@ -15,6 +15,7 @@ const createName = function (data) {
     name = "KunToi#"+x;
     i = (global.namelist).findIndex(user => user.name == name)
   }
+
   info = {'socketID':socket.id, 'name':name, 'score':0};
   let index = (global.namelist).findIndex(user => user.socketID == socket.id)   //find index of disconnected id
   //console.log(index)
@@ -26,4 +27,21 @@ const createName = function (data) {
   socket.emit("ack_name",{name,namelist})
 }
 
-module.exports = { createName };
+const loginState = function (data) {
+  const socket = this;
+  let index = (global.namelist).findIndex(user => user.socketID == socket.id);   //find index of disconnected id
+  let login = 0;
+  let name = ""
+  if (index != -1) {
+    login = 1;
+    name = info.name
+  };
+  //console.log(index, login, info.name,name)
+  socket.emit("ack_login",{login,name})
+  //console.log("sent")
+}
+
+
+
+
+module.exports = { createName, loginState, info };

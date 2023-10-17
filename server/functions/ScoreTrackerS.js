@@ -1,7 +1,6 @@
 const pts = 0;
 const b1 = [];    //len: 2-15
 const b2 = [];
-let index = (global.namelist).findIndex(user => user.socketID == socket.id);
 
 const updateScore = function (data) {       //data = {len,difftime,powerup}
   const socket = this;;
