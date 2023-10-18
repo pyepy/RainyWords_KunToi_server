@@ -43,11 +43,15 @@ const createRoom = function (data) {
     let myRoom = new Room(data.gameMode, roomCreaterName)
     console.log(myRoom);
 
-    io.to(roomCreaterID).emit('roomCreated', {myRoom})
+    socket.join(myRoom.roomNo); //join room
 
-
-    
-
+    socket.emit('roomCreated', {myRoom})
 };
 
-module.exports = { createRoom, Rooms };
+const giveRoomInfo = function (data) {
+    const socket = this;
+
+    socket.emit('giveRoomInfo', {Rooms})
+};
+
+module.exports = { createRoom, giveRoomInfo, Rooms };

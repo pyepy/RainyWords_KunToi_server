@@ -8,7 +8,7 @@ const { trackTime } = require('./functions/GameTimerS.js')
 const { createName, loginState } = require('./functions/AddUsernameS.js')
 const { selectLobby } = require('./functions/SelectLobbyS.js')
 const { updateScore } = require('./functions/ScoreTrackerS.js')
-const { createRoom } = require('./functions/Lobby.js')
+const { createRoom, giveRoomInfo } = require('./functions/Lobby.js')
 
 global.count = 0;   //for PlayerCounter
 global.namelist = [];
@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
 
     //CreateRoom
     socket.on("request_create_room", createRoom);
+    socket.on("request_room_info", giveRoomInfo);
 });
 
 var lobby = io.of('/play');
