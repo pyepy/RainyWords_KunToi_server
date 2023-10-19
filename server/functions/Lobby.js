@@ -1,16 +1,10 @@
-const { io } = require('../utils/socket-server.js')
+const { getUserInfo, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
 
 let RoomNums = []
 let Rooms = []
 
 function generateRoomNo() {
-    const number = '1234567890';
-    let result = '';
-  
-    for (let i = 0; i < 5; i++) {
-      const randomIndex = Math.floor(Math.random() * number.length);
-      result += number.charAt(randomIndex);
-    }
+    let result = ('00000'+Math.floor(Math.random()*100000)).slice(-5)
 
     if (!(RoomNums.includes(result))){
         return result;
@@ -51,41 +45,51 @@ function Room( gameMode, roomPlayerCount, player1, player2){
 
 const createRoom = function (data) {
     const socket = this;
+    let index = findNameIndex(socket.id,"id");
+    let roomCreator = getUserInfo(index);
+    let roomCreatorName = "";
+    let roomCreatorID = "";
+    if (index != -1) {
+        roomCreatorName = roomCreator.name;
+        roomCreatorID = roomCreator.socketID;
+    }
+    
 
-    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
-    let roomCreater = (global.namelist)[index];
-    let roomCreaterName = roomCreater.name;
-    let roomCreaterID = roomCreater.socketID;
-
-
-    let myRoom = new Room(data.gameMode,1, roomCreaterName)
+    let myRoom = new Room(data.gameMode,1, roomCreatorName)
     Rooms.push(myRoom);
     console.log('Current rooms:');
     console.log(Rooms);
 
     socket.join(myRoom.roomNo); //join room
-
     socket.emit('roomCreated', {myRoom})
+    updateUserInfo(myRoom.roomNo,index,"room");
 };
 
 const giveRoomInfo = function () {
     const socket = this;
 
-    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
-    let user = (global.namelist)[index];
-    let myName = user.name;
-
-    let myRoom = findMyRoomByName(myName);
-    
+    let index = findNameIndex(socket.id,"id");
+    let user = getUserInfo(index);
+    let myRoom = "";
+    if (index != -1) {
+        let myName = user.name;
+        myRoom = findMyRoomByName(myName);
+    }
     socket.emit('giveRoomInfo', {myRoom})
 };
 
 const leaveRoom = function() {
     const socket = this;
-    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
-    let user = (global.namelist)[index];
-    let myName = user.name;
-    let myRoom = findMyRoomByName(myName)
+
+    let index = findNameIndex(socket.id,"id");
+    let user = getUserInfo(index);
+    let myRoom = "";
+    let myName = ""
+    if (index != -1) {
+        myName = user.name;
+        myRoom = findMyRoomByName(myName);
+        updateUserInfo("",index,"room");
+    }
 
     if (myRoom.roomPlayerCount === 1){
         Rooms.pop(myRoom)
@@ -113,46 +117,57 @@ const leaveRoom = function() {
 const joinGameRoom = function(data) {
     const socket = this;
 
-    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
-    let user = (global.namelist)[index];
-    let myName = user.name;
+    let index = findNameIndex(socket.id,"id");
+    let user = getUserInfo(index);
+    let myName = "";
+    if (index != -1) {
+        myName = user.name;
+    }
 
     let tryRoom = findMyRoomByRoomNo(data.roomToJoin);
 
     if(tryRoom === 'CanNotFindRoom'){
         socket.emit('canNotFindRoom');
-    } else socket.emit('roomFound');
+    } else if (tryRoom.roomPlayerCount >= 2) {  //more than 2 ppl in rooms
+        socket.emit('canNotFindRoom');
+    } else {
+        socket.emit('roomFound');
 
+        for (const room of Rooms){
+            if(room.roomNo === data.roomToJoin){
+                room.player2 = myName;
+                room.roomPlayerCount += 1;
+            } 
+        }
 
-    for (const room of Rooms){
-        if(room.roomNo === data.roomToJoin){
-            room.player2 = myName;
-            room.roomPlayerCount += 1;
-        } 
-    }
+        console.log('Current rooms:');
+        console.log(Rooms);
 
-    console.log('Current rooms:');
-    console.log(Rooms);
+        let myRoom = findMyRoomByName(myName);
 
-    let myRoom = findMyRoomByName(myName);
+        socket.join(myRoom.roomNo); //join room
+        socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 
-    socket.join(myRoom.roomNo); //join room
-
-    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+        updateUserInfo(myRoom.roomNo,index,"room");
+    };
 }
 
 const startGame = function() {
     const socket = this;
 
-    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
-    let user = (global.namelist)[index];
+    let index = findNameIndex(socket.id,"id");
+    let user = getUserInfo(index);
     let myName = user.name;
     let myRoom = findMyRoomByName(myName)
 
     socket.emit('goToGame')
     socket.to(myRoom.roomNo).emit("goToGame");
 
+    console.log('Current rooms:');
+    console.log(Rooms);
 
-}
+    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+    
+};
 
 module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms };

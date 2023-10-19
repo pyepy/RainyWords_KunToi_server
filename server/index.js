@@ -5,30 +5,22 @@ const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect } = require('./functions/PlayerCountS.js');
 const { randomLength, randomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
-const { createName, loginState } = require('./functions/AddUsernameS.js')
-const { selectLobby } = require('./functions/SelectLobbyS.js')
+const { createName } = require('./functions/AddUsernameS.js')
 const { updateScore } = require('./functions/ScoreTrackerS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame } = require('./functions/Lobby.js')
-
-global.count = 0;   //for PlayerCounter
-global.namelist = [];
-global.roomlist = []
 
 instrument(io, {    //admin check
     auth: false,
   });
 
-io.on("connection", playerConnect)      //playerCounter
-
 io.on("connection", (socket) => {
     //AddNametoDB
-    socket.on("req_login",loginState);
     socket.once("assign_name",createName);
 
     //SendMessage
     socket.on("join_room", joinRoom);
     socket.on("send_message", sendMessage);
-    
+
     //RandomWord
     socket.on("request_len", randomLength);
     socket.on("request_word", randomWord);
@@ -45,10 +37,13 @@ io.on("connection", (socket) => {
 
     //leaveRoom
     socket.on("leave_room", leaveRoom);
+    socket.on("disconnect", leaveRoom)
 
-    //leaveRoom
+    //startGame
     socket.on("request_start_game", startGame);
 });
+
+io.on("connection", playerConnect)      //playerCounter
 
 var lobby = io.of('/play');
 /*

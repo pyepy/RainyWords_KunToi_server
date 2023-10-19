@@ -1,20 +1,35 @@
-const { io, socket } = require('../utils/socket-server.js')
+const { io, socket } = require('../utils/socket-server.js');
+/*var { count } = require('../utils/serverdata.js');*/
+const { getCount, addCount, removeCount } = require('../utils/serverdata.js');
+const { getNamelist, removeNamelist, findNameIndex } = require('../utils/serverdata.js');
 
 const playerConnect = function (socket) {
-  global.count = global.count + 1;
+  addCount();
+  let count = getCount();
   console.log(`${count}) USER CONNECTED: ${socket.id}`);
-  io.emit("online_no", global.count);
+  io.emit("online_no", count);
+  socket.on("req_online_no", sendNo);
   socket.on("disconnect", playerDisconnect);
  }
 
+const sendNo = function () {
+  const socket = this;
+  let count = getCount();
+  socket.emit("online_no",count)
+}
+
 const playerDisconnect = function () {    // subtract 1 to counter
   const socket = this;
-  global.count = global.count - 1;
+  removeCount();
+  let count = getCount();
   console.log(`${count}] USER DISCONNECTED: ${socket.id}`);
-  io.emit("online_no", global.count);
-  let index = (global.namelist).findIndex(user => user.socketID == socket.id)   //find index of disconnected id
-  global.namelist.splice(index,1)     //remove disconnected id
+  io.emit("online_no", count);
+  let index = findNameIndex(socket.id,"id")   //find index of disconnected id
+  setTimeout( function () {
+  removeNamelist(index);     //remove disconnected id
+  let namelist = getNamelist();
   console.log(namelist)
+  },1);
 }
   
 module.exports = {
