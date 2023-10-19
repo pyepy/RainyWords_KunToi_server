@@ -2,6 +2,13 @@ const { getNamelist, addNamelist, removeNamelist, findNameIndex } = require('../
 
 var name = "";
 
+function userInfo(id,name,score,room) {
+  this.socketID = id;
+  this.name = name;
+  this.score = score;
+  this.room = room;
+}
+
 const createName = function (data) {
   const socket = this;
   if (data === "") {
@@ -12,12 +19,12 @@ const createName = function (data) {
   }
   let i = findNameIndex(name,"name") 
   while (i != -1) {
-    var x = (Math.floor(Math.random() * 900)+100)   //assign random ID
+    var x = ("000"+ Math.floor(Math.random() * 1000)).slice(-3)  
     name = "KunToi#"+x;
     i = findNameIndex(name,"name") 
   }
 
-  let info = {'socketID':socket.id, 'name':name, 'score':0, 'room':""};
+  let info = new userInfo(socket.id,name,0,"");
   let index = findNameIndex(socket.id,"id")   //find index of disconnected id
   //console.log(index)
   if (index != -1) {

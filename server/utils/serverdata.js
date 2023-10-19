@@ -49,8 +49,9 @@ exports.getUserInfo = function (i) {
 }
 
 exports.updateUserInfo = function (value, i, mode) {
+  let user = namelist[i]
   if (mode == "room") {
-    namelist[i].room = value;
+    user.room = value;
     console.log(namelist);
   }
 }
