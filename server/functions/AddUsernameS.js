@@ -30,11 +30,12 @@ const createName = function (data) {
 const loginState = function (data) {
   const socket = this;
   let index = (global.namelist).findIndex(user => user.socketID == socket.id);   //find index of disconnected id
+  let user = (global.namelist)[index];
   let login = 0;
   let name = ""
   if (index != -1) {
     login = 1;
-    name = info.name
+    name = user.name
   };
   //console.log(index, login, info.name,name)
   socket.emit("ack_login",{login,name})
