@@ -1,5 +1,6 @@
 const { io } = require('../utils/socket-server.js')
 
+let RoomNums = []
 let Rooms = []
 
 function generateRoomNo() {
@@ -11,28 +12,45 @@ function generateRoomNo() {
       result += number.charAt(randomIndex);
     }
 
-    if (!(Rooms.includes(result))){
+    if (!(RoomNums.includes(result))){
         return result;
     } else{
         return generateRoomNo();
     }
+  };
 
-    
-  }
+function findMyRoomByName(name) {
+    for (const room of Rooms){
+        if(room.player1 === name || room.player2 === name){
+            return room;
+        }
+    }
 
-function Room( gameMode, player1, player2, roomNo = '00000'){
+    return new Room('error',0 ,'waiting','waiting','?????');
+};
+
+function findMyRoomByRoomNo(roomNo) {
+    for (const room of Rooms){
+        if(room.roomNo === roomNo){
+            return room;
+        }
+    }
+
+    return 'CanNotFindRoom';
+};
+
+function Room( gameMode, roomPlayerCount, player1, player2){
     this.gameMode = gameMode;
     this.player1 = player1;
     this.player2 = player2;
+    this.roomPlayerCount = roomPlayerCount;
     this.roomNo = generateRoomNo();
-    Rooms.push(this.roomNo);
-
+    RoomNums.push(this.roomNo);
 
 };
 
 const createRoom = function (data) {
     const socket = this;
-    console.log(data.gameMode);
 
     let index = (global.namelist).findIndex(user => user.socketID == socket.id);
     let roomCreater = (global.namelist)[index];
@@ -40,18 +58,91 @@ const createRoom = function (data) {
     let roomCreaterID = roomCreater.socketID;
 
 
-    let myRoom = new Room(data.gameMode, roomCreaterName)
-    console.log(myRoom);
+    let myRoom = new Room(data.gameMode,1, roomCreaterName)
+    Rooms.push(myRoom);
+    console.log('Current rooms:');
+    console.log(Rooms);
 
     socket.join(myRoom.roomNo); //join room
 
     socket.emit('roomCreated', {myRoom})
 };
 
-const giveRoomInfo = function (data) {
+const giveRoomInfo = function () {
     const socket = this;
 
-    socket.emit('giveRoomInfo', {Rooms})
+    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
+    let user = (global.namelist)[index];
+    let myName = user.name;
+
+    let myRoom = findMyRoomByName(myName);
+    
+    socket.emit('giveRoomInfo', {myRoom})
 };
 
-module.exports = { createRoom, giveRoomInfo, Rooms };
+const leaveRoom = function() {
+    const socket = this;
+    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
+    let user = (global.namelist)[index];
+    let myName = user.name;
+    let myRoom = findMyRoomByName(myName)
+
+    if (myRoom.roomPlayerCount === 1){
+        Rooms.pop(myRoom)
+    } else {
+        for (const room of Rooms){
+            if(room.player1 === myName){
+                room.roomPlayerCount -= 1;
+                let temp = room.player2;
+                room.player1 = temp;
+                room.player2 = undefined;
+            } else if (room.player2 === myName){
+                room.roomPlayerCount -= 1;
+                room.player2 = undefined;
+            }
+        }
+
+    }
+
+    console.log('Current rooms:');
+    console.log(Rooms);
+
+    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+}
+
+const joinGameRoom = function(data) {
+    const socket = this;
+
+    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
+    let user = (global.namelist)[index];
+    let myName = user.name;
+
+    let tryRoom = findMyRoomByRoomNo(data.roomToJoin);
+
+    if(tryRoom === 'CanNotFindRoom'){
+        socket.emit('canNotFindRoom');
+    } else socket.emit('roomFound');
+
+
+    for (const room of Rooms){
+        if(room.roomNo === data.roomToJoin){
+            room.player2 = myName;
+            room.roomPlayerCount += 1;
+        } 
+    }
+
+    console.log('Current rooms:');
+    console.log(Rooms);
+
+    let myRoom = findMyRoomByName(myName);
+
+    socket.join(myRoom.roomNo); //join room
+
+    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+
+
+
+
+}
+
+module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom,  Rooms };
