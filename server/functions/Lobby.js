@@ -139,10 +139,20 @@ const joinGameRoom = function(data) {
     socket.join(myRoom.roomNo); //join room
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+}
 
+const startGame = function() {
+    const socket = this;
 
+    let index = (global.namelist).findIndex(user => user.socketID == socket.id);
+    let user = (global.namelist)[index];
+    let myName = user.name;
+    let myRoom = findMyRoomByName(myName)
+
+    socket.emit('goToGame')
+    socket.to(myRoom.roomNo).emit("goToGame");
 
 
 }
 
-module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom,  Rooms };
+module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms };
