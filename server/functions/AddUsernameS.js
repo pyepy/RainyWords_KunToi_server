@@ -4,7 +4,7 @@ var info = {'socketID':'', 'name':'', 'score':0};
 const createName = function (data) {
   const socket = this;
   if (data === "") {
-    var x = (Math.floor(Math.random() * 900)+100)   //assign random ID
+    var x = ("000"+ Math.floor(Math.random() * 1000)).slice(-3)   //assign random ID
     name = "KunToi#"+x;      //default name                   
   } else {
     name = data;
