@@ -89,6 +89,7 @@ const leaveRoom = function() {
         myName = user.name;
         myRoom = findMyRoomByName(myName);
         updateUserInfo("",index,"room");
+        socket.leave(myRoom.roomNo);
     }
 
     if (myRoom.roomPlayerCount === 1){
