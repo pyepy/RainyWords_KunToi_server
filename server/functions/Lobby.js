@@ -57,7 +57,7 @@ const createRoom = function (data) {
 
     let myRoom = new Room(data.gameMode,1, roomCreatorName)
     Rooms.push(myRoom);
-    console.log('Current rooms:');
+    console.log('Current rooms (create):');
     console.log(Rooms);
 
     socket.join(myRoom.roomNo); //join room
@@ -108,7 +108,7 @@ const leaveRoom = function() {
 
     }
 
-    console.log('Current rooms:');
+    console.log('Current rooms (leave):');
     console.log(Rooms);
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
@@ -140,7 +140,7 @@ const joinGameRoom = function(data) {
             } 
         }
 
-        console.log('Current rooms:');
+        console.log('Current rooms (join):');
         console.log(Rooms);
 
         let myRoom = findMyRoomByName(myName);
@@ -163,7 +163,7 @@ const startGame = function() {
     socket.emit('goToGame')
     socket.to(myRoom.roomNo).emit("goToGame");
 
-    console.log('Current rooms:');
+    console.log('Current rooms (game):');
     console.log(Rooms);
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});

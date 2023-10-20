@@ -29,7 +29,7 @@ exports.addNamelist = function (x) {
 
 exports.removeNamelist = function (i) {   
   namelist.splice(i,1)     
-  console.log(namelist)
+  //console.log(namelist)
 };
 
 exports.findNameIndex = function (value,mode) {
@@ -49,10 +49,13 @@ exports.getUserInfo = function (i) {
 }
 
 exports.updateUserInfo = function (value, i, mode) {
-  let user = namelist[i]
+  if (i != -1) {
+    let user = namelist[i]
+  //console.log(user,namelist)
   if (mode == "room") {
     user.room = value;
     console.log(namelist);
+  }
   }
 }
 

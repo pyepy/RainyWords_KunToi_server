@@ -34,5 +34,6 @@ const playerDisconnect = function () {    // subtract 1 to counter
   
 module.exports = {
   playerConnect,
+  playerDisconnect
 }
 
