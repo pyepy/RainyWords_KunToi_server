@@ -48,6 +48,14 @@ exports.getUserInfo = function (i) {
   return namelist[i];
 }
 
+exports.getSpecificInfo = function (i,mode) {
+  if (i != -1) {
+    if (mode == "room") {
+      return namelist[i].room;
+    }
+  }
+}
+
 exports.updateUserInfo = function (value, i, mode) {
   if (i != -1) {
     let user = namelist[i]
@@ -55,6 +63,8 @@ exports.updateUserInfo = function (value, i, mode) {
   if (mode == "room") {
     user.room = value;
     console.log(namelist);
+  } else if (mode == "score") {
+    user.score += value;
   }
   }
 }

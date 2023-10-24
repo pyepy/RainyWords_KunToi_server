@@ -42,8 +42,8 @@ io.on("connection", (socket) => {
     //startGame
     socket.on("request_start_game", startGame);
 
-    //statusCheck
-    //socket.on("status_check")
+    //UpdateScore
+    socket.on("req_update_score", updateScore)
 });
 
 io.on("connection", playerConnect)      //playerCounter
