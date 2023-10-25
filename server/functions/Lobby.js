@@ -1,4 +1,5 @@
-const { getUserInfo, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
+const { io } = require('../utils/socket-server.js');
+const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
 
 let RoomNums = []
 let Rooms = []
@@ -163,6 +164,13 @@ const startGame = function() {
     console.log(Rooms);
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+
+    let namelist = getNamelist();
+    let currentRoom = getSpecificInfo(index,"room");
+    console.log(namelist)
+    namelist = namelist.filter((user) => user.room == currentRoom);
+    io.to(currentRoom).emit("send_score", {namelist});
+    console.log({namelist});
     
 };
 
