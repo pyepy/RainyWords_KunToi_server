@@ -15,12 +15,13 @@ function generateRoomNo() {
 
 function findMyRoomByName(name) {
     for (const room of Rooms){
-        if(room.player1 === name || room.player2 === name){
+        if(room.players.includes(name)){
             return room;
         }
     }
 
-    return new Room('error',0 ,'waiting','waiting','?????');
+    //return 'CanNotFindRoom'
+    return new Room('error',0 ,[]);
 };
 
 function findMyRoomByRoomNo(roomNo) {
@@ -33,10 +34,9 @@ function findMyRoomByRoomNo(roomNo) {
     return 'CanNotFindRoom';
 };
 
-function Room( gameMode, roomPlayerCount, player1, player2){
+function Room( gameMode, roomPlayerCount, players){
     this.gameMode = gameMode;
-    this.player1 = player1;
-    this.player2 = player2;
+    this.players= players;
     this.roomPlayerCount = roomPlayerCount;
     this.roomNo = generateRoomNo();
     RoomNums.push(this.roomNo);
@@ -55,7 +55,7 @@ const createRoom = function (data) {
     }
     
 
-    let myRoom = new Room(data.gameMode,1, roomCreatorName)
+    let myRoom = new Room(data.gameMode,1, [roomCreatorName])
     Rooms.push(myRoom);
     console.log('Current rooms (create):');
     console.log(Rooms);
@@ -96,14 +96,9 @@ const leaveRoom = function() {
         Rooms.pop(myRoom)
     } else {
         for (const room of Rooms){
-            if(room.player1 === myName){
+            if(room.players.includes(myName) ){
                 room.roomPlayerCount -= 1;
-                let temp = room.player2;
-                room.player1 = temp;
-                room.player2 = undefined;
-            } else if (room.player2 === myName){
-                room.roomPlayerCount -= 1;
-                room.player2 = undefined;
+                room.players.pop(myName);
             }
         }
 
@@ -136,7 +131,7 @@ const joinGameRoom = function(data) {
 
         for (const room of Rooms){
             if(room.roomNo === data.roomToJoin){
-                room.player2 = myName;
+                room.players.push(myName);
                 room.roomPlayerCount += 1;
             } 
         }
