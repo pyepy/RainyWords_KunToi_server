@@ -26,9 +26,8 @@ const updateScore = function (data) {       //data = {len,difftime,powerup}
   let currentRoom = getSpecificInfo(index,"room");
   console.log(namelist)
   namelist = namelist.filter((user) => user.room == currentRoom);
-  io.emit("send_score", {namelist});
+  io.to(currentRoom).emit("send_score", {namelist});
   console.log({namelist});
-  //socket.to(currentRoom).emit("send_score", namelist);
 }
 
 /*const UpdateIndex = function () {
