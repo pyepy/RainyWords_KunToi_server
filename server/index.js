@@ -3,10 +3,10 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js');
-const { randomLength, randomWord } = require('./functions/RandomWordS.js')
+const { randomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
-const { updateScore } = require('./functions/ScoreTrackerS.js')
+const { updateScore, endScore } = require('./functions/ScoreTrackerS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame } = require('./functions/Lobby.js')
 
 instrument(io, {    //admin check
@@ -18,7 +18,6 @@ io.on("connection", (socket) => {
     socket.once("assign_name",createName);
 
     //RandomWord     
-    socket.on("request_len", randomLength);
     socket.on("request_word", randomWord);
 
     //SendMessage
@@ -44,6 +43,7 @@ io.on("connection", (socket) => {
 
     //UpdateScore
     socket.on("req_update_score", updateScore)
+    socket.on("game_leaderboard", endScore)
 });
 
 io.on("connection", playerConnect)      //playerCounter

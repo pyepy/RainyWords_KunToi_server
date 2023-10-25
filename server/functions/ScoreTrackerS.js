@@ -27,12 +27,16 @@ const updateScore = function (data) {       //data = {len,difftime,powerup}
   console.log(namelist)
   namelist = namelist.filter((user) => user.room == currentRoom);
   io.to(currentRoom).emit("send_score", {namelist});
-  console.log({namelist});
 }
 
-/*const UpdateIndex = function () {
+const endScore = function (data) {
   const socket = this;
-  index = (global.namelist).findIndex(user => user.socketID == socket.id);
-}*/
+  let namelist = getNamelist();
+  let index = findNameIndex(socket.id,"id");
+  let currentRoom = getSpecificInfo(index,"room");
+  console.log("hiashdksdjhjb",namelist)
+  //namelist = namelist.filter((user) => user.room == currentRoom);
+  io.emit("final_score", {namelist});
+}
 
-module.exports = { updateScore }
+module.exports = { updateScore, endScore }

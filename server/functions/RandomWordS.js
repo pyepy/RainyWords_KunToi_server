@@ -38,15 +38,16 @@ const randomLength = function (mode) {    //get random length of word
       len = easyMode(rnd);
   }
   console.log(rnd ,len);
-  io.emit("send_len", len);
+  return len;
 };
 
-const randomWord = function (len) {     //assign random word to each player
+const randomWord = function (mode) {     //assign random word to each player
   const socket = this;
+  let len = randomLength(mode)
   var size = Object.values(wordlist)[len-2].length;
   var pos = Math.floor(Math.random()*size);
   word = wordlist[len][pos];
-  socket.emit("send_word", {len,word})
+  io.emit("send_word", {len,word})
 };
 
-module.exports = { randomLength, randomWord }
+module.exports = { randomWord }
