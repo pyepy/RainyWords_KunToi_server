@@ -1,6 +1,6 @@
 const { io } = require('../utils/socket-server.js')
 
-const fixedTime = 10      //set default timer
+const fixedTime = 300      //set default timer
 var timer = fixedTime;
 
 const interval = 1000;
