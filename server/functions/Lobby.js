@@ -94,12 +94,14 @@ const leaveRoom = function() {
     }
 
     if (myRoom.roomPlayerCount === 1){
-        Rooms.pop(myRoom)
+        let index = Rooms.indexOf(myRoom);
+        Rooms.splice(index, 1)
     } else {
         for (const room of Rooms){
             if(room.players.includes(myName) ){
+                let index = room.players.indexOf(myName);
+                room.players.splice(index, 1)
                 room.roomPlayerCount -= 1;
-                room.players.pop(myName);
             }
         }
 
