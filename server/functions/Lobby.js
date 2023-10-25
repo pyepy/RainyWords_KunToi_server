@@ -125,8 +125,8 @@ const joinGameRoom = function(data) {
 
     if(tryRoom === 'CanNotFindRoom'){
         socket.emit('canNotFindRoom');
-    } else if (tryRoom.roomPlayerCount >= 2) {  //more than 2 ppl in rooms
-        socket.emit('canNotFindRoom');
+    // } else if (tryRoom.roomPlayerCount >= 2) {  //more than 2 ppl in rooms
+    //     socket.emit('canNotFindRoom');
     } else {
         socket.emit('roomFound');
 
