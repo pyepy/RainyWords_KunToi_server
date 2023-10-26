@@ -1,5 +1,7 @@
 const { io } = require('../utils/socket-server.js');
-const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
+const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
+const { trackTime } = require('./GameTimerS.js');
+
 
 let RoomNums = []
 let Rooms = []
@@ -58,8 +60,9 @@ const createRoom = function (data) {
 
     let myRoom = new Room(data.gameMode,1, [roomCreatorName])
     Rooms.push(myRoom);
-    console.log('Current rooms (create):');
-    console.log(Rooms);
+    addRoomlist(myRoom);
+    // console.log('Current rooms (create):');
+    // console.log(Rooms);
 
     socket.join(myRoom.roomNo); //join room
     socket.emit('roomCreated', {myRoom})
@@ -96,19 +99,21 @@ const leaveRoom = function() {
     if (myRoom.roomPlayerCount === 1){
         let index = Rooms.indexOf(myRoom);
         Rooms.splice(index, 1)
+        removeRoomlist(myRoom);
     } else {
         for (const room of Rooms){
             if(room.players.includes(myName) ){
                 let index = room.players.indexOf(myName);
                 room.players.splice(index, 1)
                 room.roomPlayerCount -= 1;
+                updateRoomlist(room);
             }
         }
 
     }
 
-    console.log('Current rooms (leave):');
-    console.log(Rooms);
+    // console.log('Current rooms (leave):');
+    // console.log(Rooms);
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 }
@@ -136,11 +141,13 @@ const joinGameRoom = function(data) {
             if(room.roomNo === data.roomToJoin){
                 room.players.push(myName);
                 room.roomPlayerCount += 1;
+                updateRoomlist(room);
             } 
         }
 
-        console.log('Current rooms (join):');
-        console.log(Rooms);
+        // console.log('Current rooms (join):');
+        // console.log(Rooms);
+        
 
         let myRoom = findMyRoomByName(myName);
 
@@ -162,18 +169,21 @@ const startGame = function() {
     socket.emit('goToGame')
     socket.to(myRoom.roomNo).emit("goToGame");
 
-    console.log('Current rooms (game):');
+    console.log('Current rooms (game): -------------------------------');
     console.log(Rooms);
+    console.log('-------------------------------------------------------');
+
 
     socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 
     let namelist = getNamelist();
     let currentRoom = getSpecificInfo(index,"room");
-    console.log(namelist)
+    //console.log(namelist)
     namelist = namelist.filter((user) => user.room == currentRoom);
     io.to(currentRoom).emit("send_score", {namelist});
-    console.log({namelist});
-    
+    //console.log({namelist});
+    //io.to(currentRoom).emit("start_timer");
+    trackTime('hi');
 };
 
 module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms };

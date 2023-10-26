@@ -1,4 +1,5 @@
 const { io } = require('../utils/socket-server.js')
+const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist, amIRoomHead } = require('../utils/serverdata.js');
 
 const fixedTime = 300      //set default timer
 var timer = fixedTime;
@@ -6,7 +7,13 @@ var timer = fixedTime;
 const interval = 1000;
 
 const trackTime = function (data) {
-  if (data == 'hi') {     //start timer
+  // const socket = this;
+  // let myIndex = findNameIndex(socket.id,"id");
+  // let user = getUserInfo(myIndex);
+  // let headCheck = amIRoomHead(user.name)
+  // console.log(headCheck);
+  //if (data == 'hi' && headCheck) {     //start timer
+  if (data == 'hi' ) {
     time = setInterval(() => {
     //console.log('hi');
     let min = Math.floor(timer / 60)
@@ -17,10 +24,11 @@ const trackTime = function (data) {
     if (timer <= 0) {     //check time's up
       //console.log("last one")
       clearInterval(time);
-      min = Math.floor(fixedTime / 60)
-      sec = fixedTime % 60
-      setTimeout(function () {io.emit('counter', {min,sec})}, 1000);
-      timer = fixedTime + 1 
+      // min = Math.floor(fixedTime / 60)
+      // sec = fixedTime % 60
+      // setTimeout(function () {io.emit('counter', {min,sec})}, 1000);
+      // timer = fixedTime + 1 
+      io.emit('timesUp')
     }
     timer--
   }, interval);
