@@ -6,7 +6,8 @@ const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js
 const { randomWord } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
-const { updateScore, endScore } = require('./functions/ScoreTrackerS.js')
+const { updateScore } = require('./functions/ScoreTrackerS.js')
+const { endScore, resetUser } = require('./functions/EndScreenS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame } = require('./functions/Lobby.js')
 
 instrument(io, {    //admin check
@@ -43,7 +44,10 @@ io.on("connection", (socket) => {
 
     //UpdateScore
     socket.on("req_update_score", updateScore)
+
+    //Endgame
     socket.on("game_leaderboard", endScore)
+    socket.on("reset_user", resetUser)
 });
 
 io.on("connection", playerConnect)      //playerCounter

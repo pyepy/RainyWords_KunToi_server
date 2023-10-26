@@ -65,6 +65,9 @@ exports.updateUserInfo = function (value, i, mode) {
     console.log(namelist);
   } else if (mode == "score") {
     user.score += value;
+  } else if (mode == "reset") {
+    user.score = 0;
+    user.room = '';
   }
   }
 }

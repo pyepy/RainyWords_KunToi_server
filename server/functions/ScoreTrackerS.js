@@ -24,19 +24,9 @@ const updateScore = function (data) {       //data = {len,difftime,powerup}
   updateUserInfo(pts,index,"score");
   let namelist = getNamelist();
   let currentRoom = getSpecificInfo(index,"room");
-  console.log(namelist)
+  console.log("update score",socket.id)
   namelist = namelist.filter((user) => user.room == currentRoom);
   io.to(currentRoom).emit("send_score", {namelist});
 }
 
-const endScore = function (data) {
-  const socket = this;
-  let namelist = getNamelist();
-  let index = findNameIndex(socket.id,"id");
-  let currentRoom = getSpecificInfo(index,"room");
-  console.log("hiashdksdjhjb",namelist)
-  //namelist = namelist.filter((user) => user.room == currentRoom);
-  io.emit("final_score", {namelist});
-}
-
-module.exports = { updateScore, endScore }
+module.exports = { updateScore }
