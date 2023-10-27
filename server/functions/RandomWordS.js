@@ -37,7 +37,7 @@ const randomLength = function (mode) {    //get random length of word
   } else {
       len = easyMode(rnd);
   }
-  console.log(rnd ,len);
+  //console.log(rnd ,len);
   return len;
 };
 

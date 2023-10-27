@@ -1,6 +1,6 @@
 //declare all server-wide var here
 //const { getCount, addCount, removeCount } = require('../utils/serverdata.js');
-//const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
+//const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
 
 var count = 0;
 var namelist = [];
@@ -65,17 +65,50 @@ exports.updateUserInfo = function (value, i, mode) {
     console.log(namelist);
   } else if (mode == "score") {
     user.score += value;
+  } else if (mode == "reset") {
+    user.score = 0;
+    user.room = '';
   }
   }
 }
 
 //roomlist
-exports.addRoomlist = function () {
-
+exports.addRoomlist = function (room) {
+  roomlist.push(room);
+  console.log('Current rooms (create): -------------------------------');
+  console.log(roomlist);
+  console.log('-------------------------------------------------------');
 }
 
-exports.removeRoomlist = function () {
-  
+exports.removeRoomlist = function (room) {
+  const index = roomlist.indexOf(room);
+  if (index !== -1) {
+    roomlist.splice(index, 1);
+  }
+  console.log('Current rooms (removed): -------------------------------');
+  console.log(roomlist);
+  console.log('--------------------------------------------------------');
+}
+
+exports.updateRoomlist = (room) => {
+  for (var listroom of roomlist){
+    if(listroom.roomNo === (room.roomNo) ){
+        listroom = room;
+    }
+  }
+  console.log('Current rooms (updated): -------------------------------');
+  console.log(roomlist);
+  console.log('--------------------------------------------------------');
+}
+
+exports.amIRoomHead = (myName) => {
+  for (const room of roomlist){
+    if(room.players.includes(myName)) {
+      let index = room.players.indexOf(myName);
+      if(index === 0) return true;
+    }
+  }
+  return false;
 }
 
 exports.getRoomlist = function () {

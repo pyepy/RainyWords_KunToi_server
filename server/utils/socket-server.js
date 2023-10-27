@@ -20,4 +20,8 @@ const io = new Server(server, {                                     //For anythi
   },
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 module.exports = { io, server };
