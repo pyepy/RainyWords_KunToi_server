@@ -50,4 +50,13 @@ const randomWord = function (mode) {     //assign random word to each player
   io.emit("send_word", {len,word})
 };
 
-module.exports = { randomWord }
+const randomWordFixedLength = function (length) {     //assign random word to each player
+  const socket = this;
+  let len = length;
+  var size = Object.values(wordlist)[len-2].length;
+  var pos = Math.floor(Math.random()*size);
+  word = wordlist[len][pos];
+  io.emit("send_word", {len,word})
+};
+
+module.exports = { randomWord, randomWordFixedLength }

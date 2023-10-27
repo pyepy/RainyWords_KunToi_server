@@ -3,7 +3,7 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js');
-const { randomWord } = require('./functions/RandomWordS.js')
+const { randomWord, randomWordFixedLength } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
 const { updateScore, endScore } = require('./functions/ScoreTrackerS.js')
@@ -19,6 +19,7 @@ io.on("connection", (socket) => {
 
     //RandomWord     
     socket.on("request_word", randomWord);
+    socket.on("req_word_fixed_len", randomWordFixedLength);
 
     //SendMessage
     socket.on("join_room", joinRoom);
