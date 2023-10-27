@@ -4,7 +4,7 @@ const { trackTime } = require('./GameTimerS.js');
 
 
 let RoomNums = []
-let Rooms = []
+let Rooms = getRoomlist();
 
 function generateRoomNo() {
     let result = ('00000'+Math.floor(Math.random()*100000)).slice(-5)
@@ -59,7 +59,6 @@ const createRoom = function (data) {
     
 
     let myRoom = new Room(data.gameMode,1, [roomCreatorName])
-    Rooms.push(myRoom);
     addRoomlist(myRoom);
     // console.log('Current rooms (create):');
     // console.log(Rooms);
@@ -97,8 +96,6 @@ const leaveRoom = function() {
     }
 
     if (myRoom.roomPlayerCount === 1){
-        let index = Rooms.indexOf(myRoom);
-        Rooms.splice(index, 1)
         removeRoomlist(myRoom);
     } else {
         for (const room of Rooms){
@@ -163,11 +160,11 @@ const startGame = function() {
 
     let index = findNameIndex(socket.id,"id");
     let user = getUserInfo(index);
+    console.log("startgamedaimai", index, user, socket.id)
     let myName = user.name;
     let myRoom = findMyRoomByName(myName)
 
-    socket.emit('goToGame')
-    socket.to(myRoom.roomNo).emit("goToGame");
+    io.to(myRoom.roomNo).emit("goToGame");
 
     console.log('Current rooms (game): -------------------------------');
     console.log(Rooms);
@@ -185,5 +182,10 @@ const startGame = function() {
     //io.to(currentRoom).emit("start_timer");
     trackTime('hi');
 };
+
+const deleteRoom = function () {
+    removeRoomlist(myRoom);
+}
+
 
 module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms };

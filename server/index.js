@@ -7,7 +7,7 @@ const { randomWord, randomWordFixedLength } = require('./functions/RandomWordS.j
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
 const { updateScore } = require('./functions/ScoreTrackerS.js')
-const { endScore, resetUser } = require('./functions/EndScreenS.js')
+const { endScore, backHome, backToLobby } = require('./functions/EndScreenS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame } = require('./functions/Lobby.js')
 
 instrument(io, {    //admin check
@@ -48,7 +48,8 @@ io.on("connection", (socket) => {
 
     //Endgame
     socket.on("game_leaderboard", endScore)
-    socket.on("reset_user", resetUser)
+    socket.on("reset_user", backHome)
+    socket.on("play_again", backToLobby)
 });
 
 io.on("connection", playerConnect)      //playerCounter

@@ -1,6 +1,7 @@
 //declare all server-wide var here
 //const { getCount, addCount, removeCount } = require('../utils/serverdata.js');
 //const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
+//const { getRoomlist, getRoombyRoomNO, updateRoomlist, removeRoomlist, addRoomlist, amIRoomHead } = require('../utils/serverdata.js')
 
 var count = 0;
 var namelist = [];
@@ -82,6 +83,7 @@ exports.addRoomlist = function (room) {
 
 exports.removeRoomlist = function (room) {
   const index = roomlist.indexOf(room);
+  console.log(index, "removeplz")
   if (index !== -1) {
     roomlist.splice(index, 1);
   }
@@ -114,3 +116,13 @@ exports.amIRoomHead = (myName) => {
 exports.getRoomlist = function () {
   return roomlist;
 }
+
+exports.getRoombyRoomNO = function (no) {
+  const index = roomlist.findIndex(room => room.roomNo == no);
+  console.log(index, "getroom")
+  if (index != -1) {
+    console.log(index, "getroom")
+    return roomlist[index];
+  }
+}
+
