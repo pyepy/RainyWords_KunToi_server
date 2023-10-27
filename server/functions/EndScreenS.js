@@ -1,7 +1,7 @@
 const { io } = require('../utils/socket-server.js');
 const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
 
-const endScore = function (data) {
+const endScore = function () {
   const socket = this;
   let namelist = getNamelist();
   let index = findNameIndex(socket.id,"id");
