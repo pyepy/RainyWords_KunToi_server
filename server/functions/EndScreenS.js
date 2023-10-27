@@ -33,8 +33,15 @@ const backHome = function () {
 
 const backToLobby = function () {
   const socket = this;
+  let namelist = getNamelist();
   let index = findNameIndex(socket.id,"id");
   let currentRoom = getSpecificInfo(index,"room");
+  for (let i = 0; i < namelist.length; i++) {
+    let user = namelist[i];
+    if (user.room == currentRoom) {
+      updateUserInfo(currentRoom,i,"reset");
+    }
+  }
   io.in(currentRoom).emit("forced_to_lobby")
 }
 

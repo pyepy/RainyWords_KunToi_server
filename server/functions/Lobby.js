@@ -112,7 +112,7 @@ const leaveRoom = function() {
     // console.log('Current rooms (leave):');
     // console.log(Rooms);
 
-    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+    socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 }
 
 const joinGameRoom = function(data) {
@@ -149,7 +149,7 @@ const joinGameRoom = function(data) {
         let myRoom = findMyRoomByName(myName);
 
         socket.join(myRoom.roomNo); //join room
-        socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+        socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 
         updateUserInfo(myRoom.roomNo,index,"room");
     };
@@ -164,22 +164,22 @@ const startGame = function() {
     let myName = user.name;
     let myRoom = findMyRoomByName(myName)
 
-    io.to(myRoom.roomNo).emit("goToGame");
+    io.in(myRoom.roomNo).emit("goToGame");
 
     console.log('Current rooms (game): -------------------------------');
     console.log(Rooms);
     console.log('-------------------------------------------------------');
 
 
-    socket.to(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+    socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 
     let namelist = getNamelist();
     let currentRoom = getSpecificInfo(index,"room");
     //console.log(namelist)
     namelist = namelist.filter((user) => user.room == currentRoom);
-    io.to(currentRoom).emit("send_score", {namelist});
+    io.in(currentRoom).emit("send_score", {namelist});
     //console.log({namelist});
-    //io.to(currentRoom).emit("start_timer");
+    //io.in(currentRoom).emit("start_timer");
     trackTime('hi');
 };
 
