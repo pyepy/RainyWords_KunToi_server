@@ -6,7 +6,7 @@ const { playerConnect, playerDisconnect } = require('./functions/PlayerCountS.js
 const { randomWord, randomWordFixedLength } = require('./functions/RandomWordS.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
-const { updateScore } = require('./functions/ScoreTrackerS.js')
+const { addScore,subtractScore } = require('./functions/ScoreTrackerS.js')
 const { endScore, backHome, backToLobby } = require('./functions/EndScreenS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame } = require('./functions/Lobby.js')
 
@@ -44,7 +44,8 @@ io.on("connection", (socket) => {
     socket.on("request_start_game", startGame);
 
     //UpdateScore
-    socket.on("req_update_score", updateScore)
+    socket.on("req_success", addScore)
+    socket.on("req_fail", subtractScore)
 
     //Endgame
     socket.on("game_leaderboard", endScore)

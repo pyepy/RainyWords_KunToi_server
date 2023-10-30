@@ -183,7 +183,7 @@ const startGame = function() {
     io.in(myRoom.roomNo).emit("send_score", {namelist});
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
-    trackTime('hi');
+    trackTime('hi',socket.id);
 };
 
 const deleteRoom = function () {

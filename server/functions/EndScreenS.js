@@ -8,8 +8,8 @@ const endScore = function () {
   let index = findNameIndex(socket.id,"id");
   let currentRoom = getSpecificInfo(index,"room");
   console.log("hiashdksdjhjb",namelist)
-  //namelist = namelist.filter((user) => user.room == currentRoom);
-  io.emit("final_score", {namelist});
+  namelist = namelist.filter((user) => user.room == currentRoom);
+  io.in(currentRoom).emit("final_score", {namelist});
 }
 
 const backHome = function () {
