@@ -160,9 +160,12 @@ const startGame = function() {
 
     let index = findNameIndex(socket.id,"id");
     let user = getUserInfo(index);
-    console.log("startgamedaimai", index, user, socket.id)
-    let myName = user.name;
-    let myRoom = findMyRoomByName(myName)
+    let myName = "";
+    let myRoom = "";
+    if (index != -1) {
+        myName = user.name;
+        myRoom = findMyRoomByName(myName)
+    };
 
     io.in(myRoom.roomNo).emit("goToGame");
 
@@ -174,10 +177,10 @@ const startGame = function() {
     socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 
     let namelist = getNamelist();
-    let currentRoom = getSpecificInfo(index,"room");
     //console.log(namelist)
-    namelist = namelist.filter((user) => user.room == currentRoom);
-    io.in(currentRoom).emit("send_score", {namelist});
+    namelist = namelist.filter((user) => user.room == myRoom.roomNo);
+    console.log("startgamedaimai", index,socket.id, myRoom.roomNo, namelist);
+    io.in(myRoom.roomNo).emit("send_score", {namelist});
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
     trackTime('hi');
@@ -188,4 +191,4 @@ const deleteRoom = function () {
 }
 
 
-module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms };
+module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms }; 

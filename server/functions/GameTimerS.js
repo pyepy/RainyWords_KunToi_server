@@ -7,6 +7,11 @@ var timer = fixedTime;
 
 const interval = 1000;
 
+const socket = this;
+let index = findNameIndex(socket.id,"id");
+let room = getSpecificInfo(index,"room")
+
+
 const trackTime = function (data) {
   // const socket = this;
   // let myIndex = findNameIndex(socket.id,"id");

@@ -1,5 +1,6 @@
 const { wordlist } = require('../utils/wordlist.js');
 const { io } = require('../utils/socket-server.js')
+const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
 
 var len;
 var word;
@@ -47,7 +48,9 @@ const randomWord = function (mode) {     //assign random word to each player
   var size = Object.values(wordlist)[len-2].length;
   var pos = Math.floor(Math.random()*size);
   word = wordlist[len][pos];
-  io.emit("send_word", {len,word})
+  let index = findNameIndex(socket.id,"id");
+  let room = getSpecificInfo(index,"room");
+  io.in(room).emit("send_word", {len,word})
 };
 
 const randomWordFixedLength = function (length) {     //assign random word to each player
@@ -56,7 +59,9 @@ const randomWordFixedLength = function (length) {     //assign random word to ea
   var size = Object.values(wordlist)[len-2].length;
   var pos = Math.floor(Math.random()*size);
   word = wordlist[len][pos];
-  io.emit("send_word", {len,word})
+  let index = findNameIndex(socket.id,"id");
+  let room = getSpecificInfo(index,"room");
+  io.in(room).emit("send_word", {len,word})
 };
 
 module.exports = { randomWord, randomWordFixedLength }

@@ -21,7 +21,7 @@ const backHome = function () {
   for (let i = 0; i < namelist.length; i++) {
     let user = namelist[i];
     if (user.room == currentRoom) {
-      updateUserInfo(currentRoom,i,"reset");
+      updateUserInfo(currentRoom,i,"reset_all");
     }
   }
   io.in(currentRoom).emit("forced_kick");

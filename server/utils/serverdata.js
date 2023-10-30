@@ -68,6 +68,8 @@ exports.updateUserInfo = function (value, i, mode) {
     user.score += value;
   } else if (mode == "reset") {
     user.score = 0;
+  } else if (mode == "reset_all") {
+    user.score = 0;
     user.room = '';
   }
   }
