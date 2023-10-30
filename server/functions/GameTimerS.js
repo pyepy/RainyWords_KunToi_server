@@ -9,7 +9,7 @@ const { endScore } = require('./EndScreenS.js');
 
 
 const trackTime = function (data,id) {
-  const fixedTime = 60;      //set default timer
+  const fixedTime = 10;      //set default timer
   var timer = fixedTime;
   const interval = 1000;
 
@@ -31,7 +31,7 @@ const trackTime = function (data,id) {
       min = Math.floor(fixedTime / 60);
       sec = fixedTime % 60;
       timer = fixedTime + 1;
-      io.in(room).emit('timesUp');
+      io.in(room).emit('timesUp',room);
     }
     timer--
   }, interval);
