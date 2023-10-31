@@ -16,7 +16,7 @@ function generateRoomNo(gm) {
     if (!(RoomNums.includes(result))){
         return result;
     } else{
-        return generateRoomNo();
+        return generateRoomNo(gm);
     }
   };
 
