@@ -64,7 +64,9 @@ const createRoom = function (data) {
     // console.log(Rooms);
 
     socket.join(myRoom.roomNo); //join room
-    socket.emit('roomCreated', {myRoom})
+    if (data.gameMode == 'Practice'){
+        socket.emit('practiceRoomCreated', {myRoom})
+    } else socket.emit('roomCreated', {myRoom})
     updateUserInfo(myRoom.roomNo,index,"room");
 };
 
@@ -183,7 +185,9 @@ const startGame = function() {
     io.in(myRoom.roomNo).emit("send_score", {namelist});
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
-    trackTime('hi',socket.id);
+    if (myRoom.gameMode == 'Practice'){
+        trackTime('hi',socket.id,20);
+    } else trackTime('hi',socket.id,10);
 };
 
 const deleteRoom = function () {

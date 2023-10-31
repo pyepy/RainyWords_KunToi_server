@@ -8,8 +8,8 @@ const { endScore } = require('./EndScreenS.js');
 //const interval = 1000;
 
 
-const trackTime = function (data,id) {
-  const fixedTime = 10;      //set default timer
+const trackTime = function (data,id,time) {
+  const fixedTime = time;      //set default timer
   var timer = fixedTime;
   const interval = 1000;
 
