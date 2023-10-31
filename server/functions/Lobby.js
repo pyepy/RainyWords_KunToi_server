@@ -6,9 +6,13 @@ const { trackTime } = require('./GameTimerS.js');
 let RoomNums = []
 let Rooms = getRoomlist();
 
-function generateRoomNo() {
-    let result = ('00000'+Math.floor(Math.random()*100000)).slice(-5)
-
+function generateRoomNo(gm) {
+    let result;
+    if (gm == "Practice") {
+        result = "P"+('00000'+Math.floor(Math.random()*100000)).slice(-5)
+    } else {
+        result = ('00000'+Math.floor(Math.random()*100000)).slice(-5)
+    }
     if (!(RoomNums.includes(result))){
         return result;
     } else{
@@ -41,7 +45,7 @@ function Room( gameMode, roomPlayerCount, players){
     this.gameMode = gameMode;
     this.players= players;
     this.roomPlayerCount = roomPlayerCount;
-    this.roomNo = generateRoomNo();
+    this.roomNo = generateRoomNo(gameMode);
     this.gameTime = -1;
     RoomNums.push(this.roomNo);
 
@@ -99,6 +103,9 @@ const leaveRoom = function() {
     }
 
     if (myRoom.roomPlayerCount === 1){
+        if (myRoom.gameTime != -1) {
+            clearInterval(myRoom.gameTime);
+        }
         removeRoomlist(myRoom);
     } else {
         for (const room of Rooms){

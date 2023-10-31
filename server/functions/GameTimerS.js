@@ -12,13 +12,15 @@ const trackTime = function (data,myRoom,time) {
   const fixedTime = time;      //set default timer
   var timer = fixedTime;
   const interval = 1000;
-
+  min = Math.floor(timer / 60)
+  sec = timer % 60
   let room = myRoom.roomNo
+  io.in(room).emit('counter', {min,sec});
   //if (data == 'hi' && headCheck) {     //start timer
   if (data == 'hi') {
     myRoom.gameTime = setInterval(() => {
-    let min = Math.floor(timer / 60)
-    let sec = timer % 60
+    min = Math.floor(timer / 60)
+    sec = timer % 60
     io.in(room).emit('counter', {min,sec});
     //console.log(min)
     console.log(sec,room)
