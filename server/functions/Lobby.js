@@ -54,13 +54,14 @@ function Room( gameMode, roomPlayerCount, players){
 const createRoom = function (data) {
     const socket = this;
     let index = findNameIndex(socket.id,"id");
-    let roomCreator = getUserInfo(index);
-    let roomCreatorName = "";
-    let roomCreatorID = "";
-    if (index != -1) {
-        roomCreatorName = roomCreator.name;
-        roomCreatorID = roomCreator.socketID;
+    if (index == -1) {
+        socket.emit('canNotFindRoom');
+        return;
     }
+    let roomCreator = getUserInfo(index);
+    roomCreatorName = roomCreator.name;
+    roomCreatorID = roomCreator.socketID;
+    
     
 
     let myRoom = new Room(data.gameMode,1, [roomCreatorName])
@@ -92,15 +93,14 @@ const leaveRoom = function() {
     const socket = this;
 
     let index = findNameIndex(socket.id,"id");
-    let user = getUserInfo(index);
-    let myRoom = "";
-    let myName = ""
-    if (index != -1) {
-        myName = user.name;
-        myRoom = findMyRoomByName(myName);
-        updateUserInfo("",index,"room");
-        socket.leave(myRoom.roomNo);
+    if (index == -1) {
+        return;
     }
+    let user = getUserInfo(index);
+    myName = user.name;
+    myRoom = findMyRoomByName(myName);
+    updateUserInfo("",index,"room");
+    socket.leave(myRoom.roomNo);
 
     if (myRoom.roomPlayerCount === 1){
         if (myRoom.gameTime != -1) {
@@ -129,11 +129,12 @@ const joinGameRoom = function(data) {
     const socket = this;
 
     let index = findNameIndex(socket.id,"id");
-    let user = getUserInfo(index);
-    let myName = "";
-    if (index != -1) {
-        myName = user.name;
+    if (index == -1) {
+        socket.emit('canNotFindRoom');
+        return;
     }
+    let user = getUserInfo(index);
+    let myName = user.name;
 
     let tryRoom = findMyRoomByRoomNo(data.roomToJoin);
 
@@ -169,13 +170,13 @@ const startGame = function() {
     const socket = this;
 
     let index = findNameIndex(socket.id,"id");
+    if (index == -1) {
+        socket.emit('canNotFindRoom');
+        return;
+    }
     let user = getUserInfo(index);
-    let myName = "";
-    let myRoom = "";
-    if (index != -1) {
-        myName = user.name;
-        myRoom = findMyRoomByName(myName)
-    };
+    let myName = user.name;
+    let myRoom = findMyRoomByName(myName);
 
     io.in(myRoom.roomNo).emit("goToGame");
 
