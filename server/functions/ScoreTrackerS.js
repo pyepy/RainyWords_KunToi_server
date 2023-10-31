@@ -20,6 +20,14 @@ const sub = function (len) {
 
 const addScore = function (data) {       //data = {len,difftime,powerup}
   const socket = this;
+  if (data.noChange == true){
+    let namelist = getNamelist();
+    let currentRoom = getSpecificInfo(index,"room");
+    console.log("update score",socket.id)
+    namelist = namelist.filter((user) => user.room == currentRoom);
+    io.to(currentRoom).emit("send_score", {namelist});
+    return ;
+  }
   console.log(data)
   let l = (data.word).length;
   let pts = add(l);
