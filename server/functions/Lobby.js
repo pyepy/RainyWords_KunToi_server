@@ -42,6 +42,7 @@ function Room( gameMode, roomPlayerCount, players){
     this.players= players;
     this.roomPlayerCount = roomPlayerCount;
     this.roomNo = generateRoomNo();
+    this.gameTime = -1;
     RoomNums.push(this.roomNo);
 
 };
@@ -186,8 +187,8 @@ const startGame = function() {
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
     if (myRoom.gameMode == 'Practice'){
-        trackTime('hi',socket.id,20);
-    } else trackTime('hi',socket.id,10);
+        trackTime('hi',myRoom,20);
+    } else trackTime('hi',myRoom,10);
 };
 
 const deleteRoom = function () {
