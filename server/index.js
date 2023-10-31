@@ -55,25 +55,6 @@ io.on("connection", (socket) => {
 
 io.on("connection", playerConnect)      //playerCounter
 
-var lobby = io.of('/play');
-
-lobby.on("connection", (socket) => {
-    //SelectRoom
-    
-});
-
-var game = io.of('/game/');
-
-game.on("connection", (socket) => {
-    //RandomWord     
-    //socket.on("request_len", randomLength);
-    //socket.on("request_word", randomWord);
-
-    //updateScore
-    socket.on("update_score", updateScore)
-})
-
-
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING")    //when run node index.js server, return text
 });

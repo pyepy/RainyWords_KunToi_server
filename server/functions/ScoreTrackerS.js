@@ -13,8 +13,8 @@ const add = function (len) {
 }
 
 const sub = function (len) {
-  let p = 1
-  //let p = baseSubtract[len]
+  //let p = 1
+  let p = baseSubtract[len]
   return -p;
 }
 
@@ -35,7 +35,7 @@ const addScore = function (data) {       //data = {len,difftime,powerup}
   updateUserInfo(pts,index,"score");
   let namelist = getNamelist();
   let currentRoom = getSpecificInfo(index,"room");
-  console.log("update score",socket.id)
+  console.log("success score",socket.id)
   namelist = namelist.filter((user) => user.room == currentRoom);
   io.to(currentRoom).emit("send_score", {namelist});
 }
@@ -49,7 +49,7 @@ const subtractScore = function (data) {       //data = {len,difftime,powerup}
   updateUserInfo(pts,index,"score");
   let namelist = getNamelist();
   let currentRoom = getSpecificInfo(index,"room");
-  console.log("update score",socket.id)
+  console.log("fail score",socket.id)
   namelist = namelist.filter((user) => user.room == currentRoom);
   io.to(currentRoom).emit("send_score", {namelist});
 }

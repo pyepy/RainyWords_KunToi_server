@@ -195,7 +195,7 @@ const startGame = function() {
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
     if (myRoom.gameMode == 'Practice'){
-        trackTime('hi',myRoom,20);
+        trackTime('hi',myRoom,60);
     } else trackTime('hi',myRoom,10);
 };
 
