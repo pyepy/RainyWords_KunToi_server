@@ -1,14 +1,16 @@
 const { io } = require('../utils/socket-server.js');
 const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
-const { baseAdd, baseSubtract } = require('../utils/gamemode.js') 
+const { baseAdd, baseSubtract, multiplier } = require('../utils/gamemode.js') 
 
-const b1 = baseAdd;    //len: 2-15
-const b2 = [];
-
-const add = function (len) {
+const add = function (len,t) {
   //let p = 1;          // 1 point for 1 word
-  let p = baseAdd[len]
-  //let p = b1[len-2] + (b2[len-2]/difftime+1)  some function for the point system
+  //let p = baseAdd[len]
+  let p = 1
+  if (t <= 5) {
+    p = baseAdd[len] + multiplier[len]*(5-t);
+  } else {
+    p = baseAdd[len];
+  }
   return p;
 }
 
@@ -29,13 +31,12 @@ const addScore = function (data) {       //data = {len,difftime,powerup}
     return ;
   }
   console.log(data)
-  let l = (data.word).length;
-  let pts = add(l);
+  let pts = add(data.len,data.diffTime);
   let index = findNameIndex(socket.id,"id");
   updateUserInfo(pts,index,"score");
   let namelist = getNamelist();
   let currentRoom = getSpecificInfo(index,"room");
-  console.log("success score",socket.id)
+  console.log("success score",socket.id,data.word,data.len,data.diffTime)
   namelist = namelist.filter((user) => user.room == currentRoom);
   io.to(currentRoom).emit("send_score", {namelist});
 }
