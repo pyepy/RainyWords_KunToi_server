@@ -117,14 +117,8 @@ const leaveRoom = function() {
                 let namelist = getNamelist();
                 if (room.gameTime != -1) {
                     clearInterval(room.gameTime);
+                    socket.in(room.roomNo).emit("timesUp");
                 }
-                for (let i = 0; i < namelist.length; i++) {
-                    let user = namelist[i];
-                    if (user.room == room.roomNo) {
-                      updateUserInfo(room.roomNo,i,"reset");
-                    }
-                  }
-                  io.in(room.roomNo).emit("forced_leave")
             }
         }
 

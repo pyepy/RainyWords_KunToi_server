@@ -37,7 +37,7 @@ const randomWordFixedLength = function (length) {     //assign random word to ea
   word = wordlist[len][pos];
   let index = findNameIndex(socket.id,"id");
   let room = getSpecificInfo(index,"room");
-  io.in(room).emit("send_word", {len,word})
+  io.in(room).emit("send_word", {len,word,"powerUp":"none"})
 };
 
 module.exports = { randomWord, randomWordFixedLength }
