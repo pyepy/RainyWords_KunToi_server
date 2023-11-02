@@ -114,6 +114,17 @@ const leaveRoom = function() {
                 room.players.splice(index, 1)
                 room.roomPlayerCount -= 1;
                 updateRoomlist(room);
+                let namelist = getNamelist();
+                if (room.gameTime != -1) {
+                    clearInterval(room.gameTime);
+                }
+                for (let i = 0; i < namelist.length; i++) {
+                    let user = namelist[i];
+                    if (user.room == room.roomNo) {
+                      updateUserInfo(room.roomNo,i,"reset");
+                    }
+                  }
+                  io.in(room.roomNo).emit("forced_leave")
             }
         }
 

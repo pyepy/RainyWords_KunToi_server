@@ -36,6 +36,19 @@ const selectMode = function (mode) {
   } else {
     return easyMode;
   }
+} 
 
+const easyPowerUp = function (rnd) {
+  if (rnd < 0.9) {return  "none"}
+  else if (rnd >= 0.9 && rnd < 0.92) {return "freeze"}
+  else if (rnd >= 0.92 && rnd < 0.94) {return "slow"}
+  else if (rnd >= 0.94 && rnd < 0.96) {return "easy"}
+  else if (rnd >= 0.96 && rnd < 0.98) {return "flood"}
+  else {return "blind"};
 }
-module.exports = { baseAdd, baseSubtract, multiplier, selectMode }
+
+const selectPowerUp = function (mode) {
+  return easyPowerUp;
+}
+
+module.exports = { baseAdd, baseSubtract, multiplier, selectMode, selectPowerUp }
