@@ -194,9 +194,12 @@ const startGame = function() {
     io.in(myRoom.roomNo).emit("send_score", {namelist});
     //console.log({namelist});
     //io.in(currentRoom).emit("start_timer");
-    if (myRoom.gameMode == 'Practice'){
-        trackTime('hi',myRoom,60);
-    } else trackTime('hi',myRoom,10);
+
+    const timer1off = setTimeout(() => {
+        if (myRoom.gameMode == 'Practice'){
+            trackTime('hi',myRoom,60);
+        } else trackTime('hi',myRoom,10);
+    }, 4000);
 };
 
 const deleteRoom = function () {
