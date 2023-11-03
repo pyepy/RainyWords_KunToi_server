@@ -24,4 +24,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/fakeIndex.js', (req, res) => {
+  res.sendFile(__dirname + '/fakeIndex.js');
+});
+
 module.exports = { io, server };
