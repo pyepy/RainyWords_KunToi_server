@@ -203,7 +203,7 @@ const startGame = function() {
     const timer1off = setTimeout(() => {
         if (myRoom.gameMode == 'Practice'){
             trackTime('hi',myRoom,60);
-        } else trackTime('hi',myRoom,10);
+        } else trackTime('hi',myRoom,30);
     }, 4000);
 };
 

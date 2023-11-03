@@ -47,8 +47,24 @@ const easyPowerUp = function (rnd) {
   else {return "blind"};
 }
 
+const mediumPowerUp = function (rnd) {
+  if (rnd < 0.8) {return  "none"}
+  else if (rnd >= 0.8 && rnd < 0.84) {return "freeze"}
+  else if (rnd >= 0.84 && rnd < 0.88) {return "slow"}
+  else if (rnd >= 0.88 && rnd < 0.92) {return "easy"}
+  else if (rnd >= 0.92 && rnd < 0.96) {return "flood"}
+  else {return "blind"};
+}
+
 const selectPowerUp = function (mode) {
-  return easyPowerUp;
+  if (mode == 1) {
+    return easyPowerUp;
+  } else if (mode == 2) {
+    return mediumPowerUp;
+  } else {
+    return easyPowerUp;
+  }
+  
 }
 
 module.exports = { baseAdd, baseSubtract, multiplier, selectMode, selectPowerUp }

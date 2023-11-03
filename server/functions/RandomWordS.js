@@ -40,4 +40,15 @@ const randomWordFixedLength = function (length) {     //assign random word to ea
   io.in(room).emit("send_word", {len,word,"powerUp":"none"})
 };
 
-module.exports = { randomWord, randomWordFixedLength }
+const fixedLentoEnemy = function (length) {
+  const socket = this;
+  let len = length;
+  var size = Object.values(wordlist)[len-2].length;
+  var pos = Math.floor(Math.random()*size);
+  word = wordlist[len][pos];
+  let index = findNameIndex(socket.id,"id");
+  let room = getSpecificInfo(index,"room");
+  socket.in(room).emit("send_word", {len,word,"powerUp":"none"})
+};
+
+module.exports = { randomWord, randomWordFixedLength, fixedLentoEnemy }
