@@ -51,6 +51,15 @@ io.on("connection", (socket) => {
         // Handle the "blind" effect for the sender
         // Add your logic here to make the sender's sketch display the black box
     });
+    //Blind enemy
+    socket.on("activate_flood_enemy", () => {
+        // Broadcast the "blind" power-up activation to all connected clients except the sender
+        socket.broadcast.emit("flood_enemy_activated");
+
+        // Handle the "blind" effect for the sender
+        // Add your logic here to make the sender's sketch display the black box
+    });
+
 
     //UpdateScore
     socket.on("req_update_score", updateScore)
