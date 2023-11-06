@@ -1,11 +1,13 @@
 //declare all server-wide var here
 //const { getCount, addCount, removeCount } = require('../utils/serverdata.js');
-//const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
-//const { getRoomlist, getRoombyRoomNO, updateRoomlist, removeRoomlist, addRoomlist, amIRoomHead } = require('../utils/serverdata.js')
+//const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo } = require('../utils/serverdata.js');
+//const { getRoomlist, getRoomNumbers, getRoombyRoomNO, updateRoomlist, removeRoomlist, addRoomlist, amIRoomHead, resetRoomlist } = require('../utils/serverdata.js')
+
 
 var count = 0;
 var namelist = [];
 var roomlist = [];
+var roomNumbers = []
 
 //count
 exports.addCount = function () {
@@ -78,6 +80,7 @@ exports.updateUserInfo = function (value, i, mode) {
 //roomlist
 exports.addRoomlist = function (room) {
   roomlist.push(room);
+  roomNumbers.push(room.roomNo);
   console.log('Current rooms (create): -------------------------------');
   console.log(roomlist);
   console.log('-------------------------------------------------------');
@@ -88,6 +91,7 @@ exports.removeRoomlist = function (room) {
   console.log(index, "removeplz")
   if (index !== -1) {
     roomlist.splice(index, 1);
+    roomNumbers.splice(index, 1);
   }
   console.log('Current rooms (removed): -------------------------------');
   console.log(roomlist);
@@ -119,6 +123,10 @@ exports.getRoomlist = function () {
   return roomlist;
 }
 
+exports.getRoomNumbers = function () {
+  return roomNumbers;
+}
+
 exports.getRoombyRoomNO = function (no) {
   const index = roomlist.findIndex(room => room.roomNo == no);
   console.log(index, "getroom")
@@ -128,3 +136,14 @@ exports.getRoombyRoomNO = function (no) {
   }
 }
 
+exports.resetRoomlist = function () {
+  for (let i = 0; i < roomlist.length; i++) {
+    let room = roomlist[0];
+    if (room.gameTime !== -1) {
+      clearInterval(room.gameTime);
+      room.gameTime = -1;
+    }
+    roomlist.splice(0, 1);
+    roomNumbers.splice(0, 1);
+  }
+}
