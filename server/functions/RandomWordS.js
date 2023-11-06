@@ -11,9 +11,9 @@ const randomLength = function (mode) {    //get random length of word
   return len;
 };
 
-const randomPowerUp = function (mode) {    //get random length of word
+const randomPowerUp = function (mode,len) {    //get random length of word
   var rnd = Math.random();
-  const pw = selectPowerUp(mode);
+  const pw = selectPowerUp(mode,len);
   return pw(rnd);
 };
 
@@ -25,7 +25,7 @@ const randomWord = function (mode) {     //assign random word to each player
   let word = wordlist[len][pos];
   let index = findNameIndex(socket.id,"id");
   let room = getSpecificInfo(index,"room");
-  let powerUp = randomPowerUp(mode)
+  let powerUp = randomPowerUp(mode,len)
   io.in(room).emit("send_word", {len,word,powerUp})
 };
 
