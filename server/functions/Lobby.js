@@ -225,5 +225,13 @@ const deleteRoom = function () {
     removeRoomlist(myRoom);
 }
 
+const sendLobbyMessage = (data) => {
+    const socket = this;
+    let myRoom = findMyRoomByName(data.userName);
+    let name = data.userName;
+    let message = data.myMessage;
+    io.in(myRoom.roomNo).emit("send_Lobby_message", {name, message});
+};
 
-module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, Rooms }; 
+
+module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage, Rooms }; 
