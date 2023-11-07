@@ -176,7 +176,7 @@ const joinGameRoom = function(data) {
     };
 }
 
-const startGame = function() {
+const startGame = function(data) {
     const socket = this;
 
     let index = findNameIndex(socket.id,"id");
@@ -208,7 +208,7 @@ const startGame = function() {
     const timer1off = setTimeout(() => {
         if (myRoom.gameMode == 'Practice'){
             trackTime('hi',myRoom,60);
-        } else trackTime('hi',myRoom,30);
+        } else trackTime('hi',myRoom,data.timeInSec);
     }, 4000);
 };
 
