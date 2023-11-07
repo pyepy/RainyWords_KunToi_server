@@ -197,6 +197,7 @@ const startGame = function(data) {
     updateRoomlist(myRoom)
 
     io.in(myRoom.roomNo).emit("goToGame");
+    io.in(myRoom.roomNo).emit("setting_info",{"wordDifficulty":myRoom.wordDifficulty,"speedMultiplier":myRoom.speedMultiplier});
 
     console.log('Current rooms (game): -------------------------------');
     console.log(Rooms);
