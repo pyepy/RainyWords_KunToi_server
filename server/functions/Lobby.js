@@ -135,6 +135,9 @@ const leaveRoom = function() {
     // console.log('Current rooms (leave):');
     // console.log(Rooms);
 
+    let status = 'leave';
+    let message = '';
+    io.in(myRoom.roomNo).emit("send_Lobby_message", {myName,message, status});
     socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
 }
 
@@ -174,6 +177,9 @@ const joinGameRoom = function(data) {
 
         socket.join(myRoom.roomNo); //join room
         socket.in(myRoom.roomNo).emit("updateRoomInfo", {myRoom});
+        let status = 'join';
+        let message = '';
+        io.in(myRoom.roomNo).emit("send_Lobby_message", {myName,message, status});
 
         updateUserInfo(myRoom.roomNo,index,"room");
     };
@@ -228,9 +234,10 @@ const deleteRoom = function () {
 const sendLobbyMessage = (data) => {
     const socket = this;
     let myRoom = findMyRoomByName(data.userName);
-    let name = data.userName;
+    let myName = data.userName;
     let message = data.myMessage;
-    io.in(myRoom.roomNo).emit("send_Lobby_message", {name, message});
+    let status = '';
+    io.in(myRoom.roomNo).emit("send_Lobby_message", {myName, message});
 };
 
 
