@@ -46,6 +46,23 @@ io.on("connection", (socket) => {
 
     //startGame
     socket.on("request_start_game", startGame);
+    
+    //Blind enemy
+    socket.on("activate_blind_powerup", () => {
+        // Broadcast the "blind" power-up activation to all connected clients except the sender
+        socket.broadcast.emit("blind_powerup_activated");
+
+        // Handle the "blind" effect for the sender
+        // Add your logic here to make the sender's sketch display the black box
+    });
+    //flood enemy
+    socket.on("activate_flood_enemy", () => {
+        // Broadcast the "blind" power-up activation to all connected clients except the sender
+        socket.broadcast.emit("flood_enemy_activated");
+
+        // Handle the "blind" effect for the sender
+        // Add your logic here to make the sender's sketch display the black box
+    });
 
     //UpdateScore
     socket.on("req_success", addScore)
