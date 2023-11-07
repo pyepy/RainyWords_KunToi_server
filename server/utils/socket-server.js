@@ -24,8 +24,16 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/fakeIndex.js', (req, res) => {
-  res.sendFile(__dirname + '/fakeIndex.js');
+app.get('/serverdata.js', (req, res) => {
+  res.sendFile(__dirname + '/serverdata.js');
 });
+
+app.get('/socket-server.js', (req, res) => {
+  res.sendFile(__dirname + '/socket-server.js');
+});
+
+function nukeServer () {
+  alert("hi!")
+}
 
 module.exports = { io, server };

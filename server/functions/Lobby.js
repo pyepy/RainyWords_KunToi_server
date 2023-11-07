@@ -1,9 +1,10 @@
 const { io } = require('../utils/socket-server.js');
-const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo, addRoomlist, removeRoomlist, updateRoomlist, getRoomlist } = require('../utils/serverdata.js');
+const { getNamelist, getUserInfo, getSpecificInfo, addNamelist, removeNamelist, findNameIndex, updateUserInfo,
+     addRoomlist, removeRoomlist, updateRoomlist, getRoomlist, getRoomNumbers } = require('../utils/serverdata.js');
 const { trackTime } = require('./GameTimerS.js');
 
 
-let RoomNums = []
+let RoomNums = getRoomNumbers();
 let Rooms = getRoomlist();
 
 function generateRoomNo(gm) {
@@ -21,6 +22,7 @@ function generateRoomNo(gm) {
   };
 
 function findMyRoomByName(name) {
+    let Rooms = getRoomlist();
     for (const room of Rooms){
         if(room.players.includes(name)){
             return room;
@@ -32,6 +34,7 @@ function findMyRoomByName(name) {
 };
 
 function findMyRoomByRoomNo(roomNo) {
+    let Rooms = getRoomlist();
     for (const room of Rooms){
         if(room.roomNo === roomNo){
             return room;
@@ -47,8 +50,9 @@ function Room( gameMode, roomPlayerCount, players){
     this.roomPlayerCount = roomPlayerCount;
     this.roomNo = generateRoomNo(gameMode);
     this.gameTime = -1;
-    RoomNums.push(this.roomNo);
-
+    this.wordDifficulty = 2;
+    this.timeInSec = 300;
+    this.speedMultiplier = 1;
 };
 
 const createRoom = function (data) {
@@ -82,10 +86,12 @@ const giveRoomInfo = function () {
     let index = findNameIndex(socket.id,"id");
     let user = getUserInfo(index);
     let myRoom = "";
+    let myName = ""
     if (index != -1) {
-        let myName = user.name;
+        myName = user.name;
         myRoom = findMyRoomByName(myName);
     }
+    console.log("giveroominfo debug",index, user, myName)
     socket.emit('giveRoomInfo', {myRoom})
 };
 
@@ -105,6 +111,7 @@ const leaveRoom = function() {
     if (myRoom.roomPlayerCount === 1){
         if (myRoom.gameTime != -1) {
             clearInterval(myRoom.gameTime);
+            myRoom.gameTime = -1;
         }
         removeRoomlist(myRoom);
     } else {
@@ -118,6 +125,7 @@ const leaveRoom = function() {
                 if (room.gameTime != -1) {
                     clearInterval(room.gameTime);
                     socket.in(room.roomNo).emit("timesUp");
+                    room.gameTime = -1;
                 }
             }
         }
@@ -141,7 +149,7 @@ const joinGameRoom = function(data) {
     let user = getUserInfo(index);
     let myName = user.name;
 
-    let tryRoom = findMyRoomByRoomNo(data.roomToJoin);
+    let tryRoom = findMyRoomByRoomNo(data.roomToJoin);  
 
     if(tryRoom === 'CanNotFindRoom'){
         socket.emit('canNotFindRoom');
@@ -171,7 +179,7 @@ const joinGameRoom = function(data) {
     };
 }
 
-const startGame = function() {
+const startGame = function(data) {
     const socket = this;
 
     let index = findNameIndex(socket.id,"id");
@@ -182,6 +190,11 @@ const startGame = function() {
     let user = getUserInfo(index);
     let myName = user.name;
     let myRoom = findMyRoomByName(myName);
+
+    myRoom.wordDifficulty = data.wordDifficultyLevel;
+    myRoom.timeInSec = data.timeInSec;
+    myRoom.speedMultiplier = data.speedMultiplier;
+    updateRoomlist(myRoom)
 
     io.in(myRoom.roomNo).emit("goToGame");
 
@@ -203,7 +216,7 @@ const startGame = function() {
     const timer1off = setTimeout(() => {
         if (myRoom.gameMode == 'Practice'){
             trackTime('hi',myRoom,60);
-        } else trackTime('hi',myRoom,30);
+        } else trackTime('hi',myRoom,data.timeInSec);
     }, 4000);
 };
 

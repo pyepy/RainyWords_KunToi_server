@@ -44,8 +44,7 @@ const addScore = function (data) {       //data = {len,difftime,powerup}
 const subtractScore = function (data) {       //data = {len,difftime,powerup}
   const socket = this;
   console.log(data)
-  let l = (data.word).length;
-  let pts = sub(l);
+  let pts = sub(data.len);
   let index = findNameIndex(socket.id,"id");
   updateUserInfo(pts,index,"score");
   let namelist = getNamelist();
