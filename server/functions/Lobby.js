@@ -50,6 +50,9 @@ function Room( gameMode, roomPlayerCount, players){
     this.roomPlayerCount = roomPlayerCount;
     this.roomNo = generateRoomNo(gameMode);
     this.gameTime = -1;
+    this.wordDifficulty = 'Medium';
+    this.timeInSec = 300;
+    this.speedMultiplier = 1;
 };
 
 const createRoom = function (data) {
@@ -187,6 +190,11 @@ const startGame = function(data) {
     let user = getUserInfo(index);
     let myName = user.name;
     let myRoom = findMyRoomByName(myName);
+
+    myRoom.wordDifficulty = data.wordDifficulty;
+    myRoom.timeInSec = data.timeInSec;
+    myRoom.speedMultiplier = data.speedMultiplier;
+    updateRoomlist(myRoom)
 
     io.in(myRoom.roomNo).emit("goToGame");
 
