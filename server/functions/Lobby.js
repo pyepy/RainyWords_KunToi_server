@@ -237,7 +237,7 @@ const sendLobbyMessage = (data) => {
     let myName = data.userName;
     let message = data.myMessage;
     let status = '';
-    io.in(myRoom.roomNo).emit("send_Lobby_message", {myName, message});
+    io.in(myRoom.roomNo).emit("send_Lobby_message", {myName, message, status});
 };
 
 
