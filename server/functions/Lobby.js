@@ -222,15 +222,9 @@ const startGame = function(data) {
     //io.in(currentRoom).emit("start_timer");
 
     const timer1off = setTimeout(() => {
-        if (myRoom.gameMode == 'Practice'){
-            trackTime('hi',myRoom,60);
-        } else trackTime('hi',myRoom,data.timeInSec);
+        trackTime('hi',myRoom,data.timeInSec);
     }, 4000);
 };
-
-const deleteRoom = function () {
-    removeRoomlist(myRoom);
-}
 
 const sendLobbyMessage = (data) => {
     const socket = this;

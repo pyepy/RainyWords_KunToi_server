@@ -1,7 +1,7 @@
 const baseAdd = [0,0,20,30,40,60,80,100,120,150,180,210,240,270,300,350]
 const baseSubtract = [0,0,30,40,50,60,70,80,90,100,110,120,130,140,150,160]
 const multiplier = [0,0,2,3,6,8,12,16,20,24,30,36,46,60,70]
-const nWord = [-300,-600,-1200]
+const nWord = [0,300,600,1200]
 
 const easyMode = function (rnd) {   //assign prob. for easy mode (5.05)
   if (rnd < 0.05) {return(2)}
@@ -55,7 +55,7 @@ const selectMode = function (mode) {
 } 
 
 const easyPowerUp = function (rnd, len) {
-  if (rnd < 0.1 && len < 4 ) {return "nWord"}
+  if (rnd < 0.1 && len < 4 ) {return "nword"}
   else if (rnd < 0.9) {return  "none"}
   else if (rnd >= 0.9 && rnd < 0.92) {return "freeze"}
   else if (rnd >= 0.92 && rnd < 0.94) {return "slow"}
@@ -65,8 +65,8 @@ const easyPowerUp = function (rnd, len) {
 }
 
 const mediumPowerUp = function (rnd, len) {
-  if (rnd > 0.3 && len < 3) {return "nWord"}
-  else if (rnd < 0.1 && len < 5 ) {return "nWord"}
+  if (rnd > 0.3 && len < 3) {return "nword"}
+  else if (rnd < 0.1 && len < 5 ) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.84) {return "freeze"}
   else if (rnd >= 0.84 && rnd < 0.88) {return "slow"}
@@ -76,8 +76,8 @@ const mediumPowerUp = function (rnd, len) {
 }
 
 const hardPowerUp = function (rnd, len) {
-  if (rnd > 0.2 && len < 4) {return "nWord"}
-  else if (rnd < 0.1 && len < 6 ) {return "nWord"}
+  if (rnd > 0.2 && len < 4) {return "nword"}
+  else if (rnd < 0.1 && len < 6 ) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.82) {return "freeze"}
   else if (rnd >= 0.82 && rnd < 0.84) {return "slow"}
