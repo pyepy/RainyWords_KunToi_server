@@ -129,9 +129,7 @@ exports.getRoomNumbers = function () {
 
 exports.getRoombyRoomNO = function (no) {
   const index = roomlist.findIndex(room => room.roomNo == no);
-  console.log(index, "getroom")
   if (index != -1) {
-    console.log(index, "getroom")
     return roomlist[index];
   }
 }

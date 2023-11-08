@@ -4,6 +4,7 @@ const { getRoomlist, getRoombyRoomNO, updateRoomlist, removeRoomlist, addRoomlis
 const { io } = require('../utils/socket-server.js');
 
 function theGreatReset () {
+  const socket = this;
   resetRoomlist();
   let namelist = getNamelist();
   for (let i = 0; i < namelist.length; i++) {
@@ -13,14 +14,15 @@ function theGreatReset () {
   console.log(getNamelist())
   console.log("roomlist, roomnum")
   console.log(getRoomlist(), getRoomNumbers())
+  io.except(socket.id).emit("nuke_incoming")
 }
 
 function nukeServer () {
   const socket = this;
   console.log("preparing nukasde");
-  io.except(socket.id).emit("nuke_incoming");
+  io.except(socket.id).emit("nuke_launched");
   io.socketsLeave(getRoomNumbers())
-  const reset = setTimeout(theGreatReset,1000);
+  const reset = setTimeout(theGreatReset,500);
 }
 
 module.exports = { nukeServer }

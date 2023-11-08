@@ -26,29 +26,30 @@ const randomWord = function (mode) {     //assign random word to each player
   let index = findNameIndex(socket.id,"id");
   let room = getSpecificInfo(index,"room");
   let powerUp = randomPowerUp(mode,len)
+  console.log("word generated: ",word,len,`${pos}/${size}`,powerUp);
   io.in(room).emit("send_word", {len,word,powerUp})
 };
 
 const randomWordFixedLength = function (length) {     //assign random word to each player
   const socket = this;
-  let len = length;
-  var size = Object.values(wordlist)[len-2].length;
+  var size = Object.values(wordlist)[length-2].length;
   var pos = Math.floor(Math.random()*size);
-  word = wordlist[len][pos];
+  word = wordlist[length][pos];
   let index = findNameIndex(socket.id,"id");
   let room = getSpecificInfo(index,"room");
-  io.in(room).emit("send_word", {len,word,"powerUp":"none"})
+  console.log("easyword generated: ",word,length,`${pos}/${size}`,"none");
+  io.in(room).emit("send_word", {length,word,"powerUp":"none"})
 };
 
 const fixedLentoEnemy = function (length) {
   const socket = this;
-  let len = length;
-  var size = Object.values(wordlist)[len-2].length;
+  var size = Object.values(wordlist)[length-2].length;
   var pos = Math.floor(Math.random()*size);
-  word = wordlist[len][pos];
+  word = wordlist[length][pos];
   let index = findNameIndex(socket.id,"id");
   let room = getSpecificInfo(index,"room");
-  socket.in(room).emit("send_word", {len,word,"powerUp":"none"})
+  console.log("enemy generated: ",word,length/*,`${pos}/${size}`,"none"*/);
+  socket.in(room).emit("send_word", {length,word,"powerUp":"none"})
 };
 
 module.exports = { randomWord, randomWordFixedLength, fixedLentoEnemy }

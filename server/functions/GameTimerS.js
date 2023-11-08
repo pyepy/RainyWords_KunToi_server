@@ -14,37 +14,42 @@ const trackTime = function (data,myRoom,time) {
   const interval = 1000;
   min = Math.floor(timer / 60)
   sec = timer % 60
-  let room = myRoom.roomNo
-  io.in(room).emit('counter', {min,sec});
-  //if (data == 'hi' && headCheck) {     //start timer
-  if (data == 'hi') {
-    myRoom.gameTime = setInterval(() => {
-    min = Math.floor(timer / 60)
-    sec = timer % 60
+  let roomlist = getRoomlist();
+  let index = roomlist.findIndex(room => room.roomNo == myRoom.roomNo);
+  if (index != -1) {
+    let room = myRoom.roomNo
     io.in(room).emit('counter', {min,sec});
-    //console.log(min)
-    console.log(sec,room)
-    if (timer <= 0) {     //check time's up
-      //console.log("last one")
+    //if (data == 'hi' && headCheck) {     //start timer
+    if (data == 'hi') {
+     myRoom.gameTime = setInterval(() => {
+      min = Math.floor(timer / 60)
+      sec = timer % 60
+      io.in(room).emit('counter', {min,sec});
+      //console.log(min)
+      //console.log(min,":",sec,room)
+      if (timer <= 0) {     //check time's up
+        //console.log("last one")
+        clearInterval(myRoom.gameTime);
+        min = Math.floor(fixedTime / 60);
+        sec = fixedTime % 60;
+        timer = fixedTime + 1;
+        myRoom.gameTime = -1
+        io.in(room).emit('timesUp',room);
+      }
+     timer--
+    }, interval);
+    } else if (data == 'bye') {   //pause timer
+      //console.log('stop')
       clearInterval(myRoom.gameTime);
-      min = Math.floor(fixedTime / 60);
-      sec = fixedTime % 60;
-      timer = fixedTime + 1;
+    } else if (data == 'no') {    //reset timer
+      clearInterval(myRoom.gameTime);
+      let min = Math.floor(fixedTime / 60)
+      let sec = fixedTime % 60
       myRoom.gameTime = -1
-      io.in(room).emit('timesUp',room);
+      io.in(room).emit('counter', {min,sec});
     }
-    timer--
-  }, interval);
-  } else if (data == 'bye') {   //pause timer
-    //console.log('stop')
-    clearInterval(myRoom.gameTime);
-  } else if (data == 'no') {    //reset timer
-    clearInterval(myRoom.gameTime);
-    let min = Math.floor(fixedTime / 60)
-    let sec = fixedTime % 60
-    myRoom.gameTime = -1
-    io.in(room).emit('counter', {min,sec});
   }
+  
 }
 
 module.exports = { trackTime };
