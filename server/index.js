@@ -1,5 +1,6 @@
 const { io, server } = require('./utils/socket-server.js')
 const { instrument } = require("@socket.io/admin-ui");
+const { getNamelist, getRoomlist } = require('./utils/serverdata')
 
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect, playerDisconnect, sendNo } = require('./functions/PlayerCountS.js');
@@ -31,7 +32,7 @@ io.on("connection", (socket) => {
     socket.on("request_word", randomWord);
     //GamePlay
     socket.on("req_word_fixed_len", randomWordFixedLength);
-    socket.on("req_blind", blindEnemy)
+    socket.on("activate_blind_powerup", blindEnemy)
     socket.on("req_flood_enemy", fixedLentoEnemy)
 
     //SendMessage
@@ -58,19 +59,6 @@ io.on("connection", (socket) => {
     //startGame
     socket.on("request_start_game", startGame);
     
-    //Blind enemy
-    socket.on("activate_blind_powerup", () => {
-        // Broadcast the "blind" power-up activation to all connected clients except the sender
-        socket.broadcast.emit("blind_powerup_activated");
-    });
-    //flood enemy
-    socket.on("activate_flood_enemy", () => {
-        // Broadcast the "blind" power-up activation to all connected clients except the sender
-        socket.broadcast.emit("flood_enemy_activated");
-    });
-    // socket.on("activate_nword", () => {
-    //     socket.broadcast.emit("nword_activated");
-    // });
     //UpdateScore
     socket.on("req_success", addScore)
     socket.on("req_fail", subtractScore)
@@ -80,7 +68,14 @@ io.on("connection", (socket) => {
     socket.on("reset_user", backHome)
     socket.on("play_again", backToLobby)
 
+    //Admin
     socket.on("prepare_nuke", nukeServer)
+    socket.on("checkname", () => {
+        console.log(getNamelist());
+    })
+    socket.on("checkroom", () => {
+        console.log(getRoomlist());
+    })
 });
 
 //io.on("connection", playerConnect)      //playerCounter

@@ -66,7 +66,7 @@ const selectMode = function (mode) {
 
 const easyPowerUp = function (rnd, len) {
   //console.log("easypowerup",rnd,len)
-  if (rnd > 0.9 && len < 5) {return "nword"}
+  if (rnd > 0.95 && len < 5) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.85) {return "freeze"}
   else if (rnd >= 0.85 && rnd < 0.90) {return "slow"}
@@ -77,7 +77,7 @@ const easyPowerUp = function (rnd, len) {
 
 const mediumPowerUp = function (rnd, len) {
   //console.log("midpowerup",rnd,len)
-  if (rnd > 0.7 && len < 5) {return "nword"}
+  if (rnd > 0.9 && len < 5) {return "nword"}
   else if (rnd < 0.1 && len < 7) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.84) {return "freeze"}
@@ -89,7 +89,7 @@ const mediumPowerUp = function (rnd, len) {
 
 const hardPowerUp = function (rnd, len) {
   //console.log("hardpowerup",rnd,len)
-  if (rnd < 0.5 && len < 6) {return "nword"}
+  if (rnd < 0.85 && len < 6) {return "nword"}
   else if (rnd < 0.1 && len < 8) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.82) {return "freeze"}
