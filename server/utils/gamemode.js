@@ -3,7 +3,7 @@ const baseSubtract = [0,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75]
 const multiplier = [0,0,2,4,6,10,14,20,26,34,44,56,70,84,100]
 const nWord = [0,400,800,1200,2000]
 
-const easyMode = function (rnd) {   //assign prob. for easy mode (5)
+const easyMode = function (rnd) {   //assign prob. for easy mode
   if (rnd < 0.15) {return(3)}
   else if (rnd >= 0.15 && rnd < 0.35) {return(4)}
   else if (rnd >= 0.35 && rnd < 0.65) {return(5)}
@@ -11,7 +11,7 @@ const easyMode = function (rnd) {   //assign prob. for easy mode (5)
   else {return(7)};
 }
 
-const mediumMode = function (rnd) {   //assign prob. for medium mode (6.05)
+const mediumMode = function (rnd) {   //assign prob. for medium mode 
   if (rnd < 0.05) {return(3)}
   else if (rnd >= 0.05 && rnd < 0.20) {return(4)}
   else if (rnd >= 0.20 && rnd < 0.40) {return(5)}
@@ -21,7 +21,7 @@ const mediumMode = function (rnd) {   //assign prob. for medium mode (6.05)
   else {return(9)};
 }
 
-const hardMode = function (rnd) {   //assign prob. for hard mode (7.75)
+const hardMode = function (rnd) {   //assign prob. for hard mode 
   if (rnd < 0.05) {return(3)}
   else if (rnd >= 0.05 && rnd < 0.10) {return(4)}
   else if (rnd >= 0.10 && rnd < 0.20) {return(5)}
@@ -34,7 +34,7 @@ const hardMode = function (rnd) {   //assign prob. for hard mode (7.75)
   else {return(12)};
 }
 
-const extremeMode = function (rnd) {  //assign prob. for extreme mode (9.4)
+const extremeMode = function (rnd) {  //assign prob. for extreme mode 
   if (rnd < 0.05) {return(3)}
   else if (rnd >= 0.05 && rnd < 0.10) {return(4)}
   else if (rnd >= 0.10 && rnd < 0.15) {return(5)}
@@ -77,8 +77,8 @@ const easyPowerUp = function (rnd, len) {
 
 const mediumPowerUp = function (rnd, len) {
   //console.log("midpowerup",rnd,len)
-  if (rnd > 0.93 && len < 5) {return "nword"}
-  else if (rnd < 0.1 && len < 7) {return "nword"}
+  if (rnd > 0.95 && len < 5) {return "nword"}
+  else if (rnd > 0.92 && len < 7) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.84) {return "freeze"}
   else if (rnd >= 0.84 && rnd < 0.88) {return "slow"}
@@ -89,7 +89,7 @@ const mediumPowerUp = function (rnd, len) {
 
 const hardPowerUp = function (rnd, len) {
   //console.log("hardpowerup",rnd,len)
-  if (rnd < 0.15 && len < 6) {return "nword"}
+  if (rnd < 0.1 && len < 6) {return "nword"}
   else if (rnd < 0.1 && len < 8) {return "nword"}
   else if (rnd < 0.8) {return  "none"}
   else if (rnd >= 0.8 && rnd < 0.82) {return "freeze"}

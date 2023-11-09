@@ -13,7 +13,7 @@ const { endScore, backHome, backToLobby } = require('./functions/EndScreenS.js')
 const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage, updateSetting } = require('./functions/Lobby.js')
 
 
-const { nukeServer, adminConnect } = require('./functions/AdminPower.js')
+const { nukeServer, checkNamelist, checkRoomlist } = require('./functions/AdminPower.js')
 
 instrument(io, {    //admin check
     auth: false,
@@ -62,24 +62,20 @@ io.on("connection", (socket) => {
     socket.on("request_start_game", startGame);
     
     //UpdateScore
-    socket.on("req_success", addScore)
-    socket.on("req_fail", subtractScore)
+    socket.on("req_success", addScore);
+    socket.on("req_fail", subtractScore);
 
     //Endgame
-    socket.on("game_leaderboard", endScore)
-    socket.on("reset_user", backHome)
-    socket.on("play_again", backToLobby)
+    socket.on("game_leaderboard", endScore);
+    socket.on("reset_user", backHome);
+    socket.on("play_again", backToLobby);
 
     socket.on("update_setting", updateSetting)
 
     //Admin
-    socket.on("prepare_nuke", nukeServer)
-    socket.on("checkname", () => {
-        console.log(getNamelist());
-    })
-    socket.on("checkroom", () => {
-        console.log(getRoomlist());
-    })
+    socket.on("prepare_nuke", nukeServer);
+    socket.on("checkname", checkNamelist);
+    socket.on("checkroom", checkRoomlist);
 });
 
 //io.on("connection", playerConnect)      //playerCounter

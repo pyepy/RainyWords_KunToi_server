@@ -25,4 +25,19 @@ function nukeServer () {
   const reset = setTimeout(theGreatReset,500);
 }
 
-module.exports = { nukeServer }
+function checkNamelist () {
+  const socket = this;
+  let msg = getNamelist();
+  console.log(msg);
+  socket.emit("admin_log",msg)
+}
+
+function checkRoomlist () {
+  const socket = this;
+  let msg = getRoomlist();
+  console.log(msg);
+  socket.emit("admin_log",msg)
+
+}
+
+module.exports = { nukeServer, checkNamelist, checkRoomlist }
