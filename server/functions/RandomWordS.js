@@ -13,8 +13,8 @@ const randomLength = function (mode) {    //get random length of word
 
 const randomPowerUp = function (mode,len) {    //get random length of word
   var rnd = Math.random();
-  const pw = selectPowerUp(mode,len);
-  return pw(rnd);
+  const pw = selectPowerUp(mode);
+  return pw(rnd,len);
 };
 
 const randomWord = function (mode) {     //assign random word to each player
