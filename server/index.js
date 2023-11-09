@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
     socket.on("request_word", randomWord);
     //GamePlay
     socket.on("req_word_fixed_len", randomWordFixedLength);
-    socket.on("activate_blind_powerup", blindEnemy)
+    socket.on("req_blind", blindEnemy)
     socket.on("req_flood_enemy", fixedLentoEnemy)
 
     //SendMessage
