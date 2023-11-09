@@ -112,22 +112,22 @@ const selectPowerUp = function (mode) {
 }
 
 const easyFlood = function (rnd) {
-  return "none"
+  return "p_none"
 }
 
 const mediumFlood = function (rnd) {
-  if (rnd <= 0.3) {
-    return "nword"
+  if (rnd <= 0.15) {
+    return "p_nword"
   } else  {
-    return "none"
+    return "p_none"
   }
 }
 
 const hardFlood = function (rnd) {
-  if (rnd <= 0.6) {
-    return "nword"
+  if (rnd <= 0.3) {
+    return "p_nword"
   } else  {
-    return "none"
+    return "p_none"
   }
 }
 
@@ -145,23 +145,23 @@ const selectFlood = function (mode) {
 
 const easyRain = function (rnd) {
   if (rnd < 0.2) {
-    return "slow"
+    return "p_slow"
   } else if (rnd >= 0.2 && rnd < 0.3) {
-    return "freeze"
+    return "p_freeze"
   } else {
-    return "none"
+    return "p_none"
   }
 }
 
 const mediumRain = function (rnd) {
-  return "none"
+  return "p_none"
 }
 
 const hardRain = function (rnd) {
-  if (rnd < 0.3) {
-    return "nword"
+  if (rnd < 0.15) {
+    return "p_nword"
   } else {
-    return "none"
+    return "p_none"
   }
 }
 
