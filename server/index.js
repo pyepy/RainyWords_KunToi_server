@@ -29,8 +29,8 @@ io.on("connection", (socket) => {
 
     //RandomWord     
     socket.on("request_word", randomWord);
-    socket.on("req_word_fixed_len", randomWordFixedLength);
     //GamePlay
+    socket.on("req_word_fixed_len", randomWordFixedLength);
     socket.on("req_blind", blindEnemy)
     socket.on("req_flood_enemy", fixedLentoEnemy)
 

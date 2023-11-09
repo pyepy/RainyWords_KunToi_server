@@ -18,7 +18,6 @@ const sub = function (len,power) {
   if (power == "nword") {
     return 0;
   }
-  //let p = 1
   let p = baseSubtract[len]
   return -p;
 }
