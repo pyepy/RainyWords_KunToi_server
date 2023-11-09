@@ -235,5 +235,22 @@ const sendLobbyMessage = (data) => {
     io.in(myRoom.roomNo).emit("send_Lobby_message", {myName, message, status});
 };
 
+const updateSetting = (data) => {
+    const socket = this;
 
-module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage, Rooms }; 
+    // let index = findNameIndex(socket.id,"id");
+    // if (index == -1) {
+    //     return;
+    // }
+    // let user = getUserInfo(index);
+    let myName = data.userName;
+    let myRoom = findMyRoomByName(myName);
+
+    myRoom.wordDifficulty = data.wordDifficultyLevel;
+    myRoom.timeInSec = data.timeInSec;
+    myRoom.speedMultiplier = data.speedMultiplier;
+    updateRoomlist(myRoom);
+};
+
+
+module.exports = { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage,updateSetting, Rooms }; 

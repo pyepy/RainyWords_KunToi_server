@@ -10,7 +10,7 @@ const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
 const { addScore,subtractScore } = require('./functions/ScoreTrackerS.js')
 const { endScore, backHome, backToLobby } = require('./functions/EndScreenS.js')
-const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage } = require('./functions/Lobby.js')
+const { createRoom, giveRoomInfo, leaveRoom, joinGameRoom, startGame, sendLobbyMessage, updateSetting } = require('./functions/Lobby.js')
 
 
 const { nukeServer, adminConnect } = require('./functions/AdminPower.js')
@@ -69,6 +69,8 @@ io.on("connection", (socket) => {
     socket.on("game_leaderboard", endScore)
     socket.on("reset_user", backHome)
     socket.on("play_again", backToLobby)
+
+    socket.on("update_setting", updateSetting)
 
     //Admin
     socket.on("prepare_nuke", nukeServer)
