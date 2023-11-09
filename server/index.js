@@ -5,7 +5,7 @@ const { getNamelist, getRoomlist } = require('./utils/serverdata')
 const { sendMessage, joinRoom } = require('./functions/SendMessageS.js');
 const { playerConnect, playerDisconnect, sendNo } = require('./functions/PlayerCountS.js');
 const { randomWord, randomWordFixedLength, fixedLentoEnemy } = require('./functions/RandomWordS.js')
-const { blindEnemy } = require('./functions/PowerUp.js')
+const { blindEnemy, floodEnemy } = require('./functions/PowerUp.js')
 const { trackTime } = require('./functions/GameTimerS.js')
 const { createName } = require('./functions/AddUsernameS.js')
 const { addScore,subtractScore } = require('./functions/ScoreTrackerS.js')
@@ -31,9 +31,11 @@ io.on("connection", (socket) => {
     //RandomWord     
     socket.on("request_word", randomWord);
     //GamePlay
-    socket.on("req_word_fixed_len", randomWordFixedLength);
     socket.on("req_blind", blindEnemy)
-    socket.on("req_flood_enemy", fixedLentoEnemy)
+    socket.on("req_flood_enemy", floodEnemy)
+    socket.on("req_word_fixed_len", randomWordFixedLength);
+    socket.on("req_flood_word", fixedLentoEnemy)
+    
 
     //SendMessage
     socket.on("join_room", joinRoom);

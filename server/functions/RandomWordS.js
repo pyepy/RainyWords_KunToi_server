@@ -63,7 +63,7 @@ const fixedLentoEnemy = function (data) {
   let room = getSpecificInfo(index,"room");
   let powerUp = randomFlood(data.mode,data.len)
   console.log("enemy generated: ",word,data.len,`${pos}/${size}`,powerUp);
-  socket.in(room).emit("send_word", {"len":data.len,word,powerUp})
+  socket.emit("send_word", {"len":data.len,word,powerUp})
 };
 
 module.exports = { randomWord, randomWordFixedLength, fixedLentoEnemy }
