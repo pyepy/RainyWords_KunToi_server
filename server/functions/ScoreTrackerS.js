@@ -4,7 +4,7 @@ const { baseAdd, baseSubtract, multiplier, nWord } = require('../utils/gamemode.
 
 const add = function (len,t,power,mode) {
   let p = 1
-  if (power == "nword") {
+  if (power == "nword" || power == "p_nword") {
     p = -(nWord[mode]);
   } else if (t <= 5) {
     p = baseAdd[len] + multiplier[len]*(5-t);
@@ -15,7 +15,7 @@ const add = function (len,t,power,mode) {
 }
 
 const sub = function (len,power) {
-  if (power == "nword") {
+  if (power == "nword" || power == "p_nword")  {
     return 0;
   }
   let p = baseSubtract[len]
