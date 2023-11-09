@@ -4,11 +4,10 @@ const multiplier = [0,0,2,4,6,10,14,20,26,34,44,56,70,84,100]
 const nWord = [0,400,800,1200,2000]
 
 const easyMode = function (rnd) {   //assign prob. for easy mode
-  if (rnd < 0.15) {return(3)}
-  else if (rnd >= 0.15 && rnd < 0.35) {return(4)}
-  else if (rnd >= 0.35 && rnd < 0.65) {return(5)}
-  else if (rnd >= 0.65 && rnd < 0.85) {return(6)}
-  else {return(7)};
+  if (rnd < 0.20) {return(3)}
+  else if (rnd >= 0.20 && rnd < 0.50) {return(4)}
+  else if (rnd >= 0.50 && rnd < 0.80) {return(5)}
+  else {return(6)};
 }
 
 const mediumMode = function (rnd) {   //assign prob. for medium mode 
